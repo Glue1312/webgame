@@ -16,10 +16,14 @@ handlers:
   - url: /sass
     static_dir: sass
 
-  # Tangani semua file PHP
+  # Tangani semua file PHP secara langsung
   - url: /(.+\.php)$
     script: \1
 
-  # Default handler arahkan ke index.php (yang redirect ke login.php)
+  # Tangani root path saja ("/"), arahkan ke index.php
+  - url: ^/$
+    script: index.php
+
+  # Tangani semua sisanya (misalnya HTML statis, dll)
   - url: /.*
     script: index.php
