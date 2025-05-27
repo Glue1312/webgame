@@ -1,19 +1,30 @@
 runtime: php81
 
-handlers:
-  # 1. Tangani file statis (CSS/JS/Gambar)
-  - url: /(.*\.(css|js|png|jpg|ico|gif|svg|woff2|woff|ttf|eot))
-    static_files: \1
-    upload: .*\.(css|js|png|jpg|ico|gif|svg|woff2|woff|ttf|eot)$
+entrypoint: serve login.php
 
-  # 2. Tangani file PHP secara eksplisit
+handlers:
+  - url: /css
+    static_dir: css
+
+  - url: /fonts
+    static_dir: fonts
+
+  - url: /img
+    static_dir: img
+    
+  - url: /js
+    static_dir: js
+
+  - url: /sass
+    static_dir: sass
+    
+  - url: /.*
+    script: auto
+    
+# Tangani semua file PHP yang valid
   - url: /(.*\.php)
     script: \1
 
-  # 3. Tangani root URL (/) ke login.php
-  - url: /
-    script: login.php
-
-  # 4. Tangani semua URL lainnya (untuk routing aplikasi)
+  # Default handler jika file tidak cocok, arahkan ke login.php atau file utama
   - url: /.*
-    script: login.php  # atau index.php jika Anda punya front controller
+    script: login.php
