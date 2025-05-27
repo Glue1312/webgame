@@ -1,6 +1,6 @@
 runtime: php81
 
-entrypoint: serve login.php
+#entrypoint: serve login.php
 
 handlers:
   - url: /css
@@ -24,5 +24,5 @@ handlers:
     script: \1
 
   # Default handler jika file tidak cocok, arahkan ke login.php atau file utama
- # - url: /.*
- #   script: login.php
+  - url: /.*
+    script: login.php
