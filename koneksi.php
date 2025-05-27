@@ -1,5 +1,5 @@
 <?php
-	$hostname	= "gamebos"; //bawaan
+	$hostname	= "130.211.209.169"; //bawaan
 	$username	= "ester"; //bawaan
 	$password	= ""; //kosong
 	$database	= "gamebosdb"; //nama database yang akan dikoneksikan
