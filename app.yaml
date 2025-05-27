@@ -1,17 +1,11 @@
-runtime: php83  # Ganti dengan versi PHP yang sesuai (php74, php81, dll.)
-handlers:
-# Arahkan semua request ke index.php (jika menggunakan MVC)
-- url: /.*
-  script: auto
+runtime: php81
 
-# Contoh tambahan untuk handle aset statis (css, js, img)
-- url: /css
-  static_dir: css
-- url: /js
-  static_dir: js
-- url: /img
-  static_dir: img
-- url: /fonts
-  static_dir: fonts
-- url: /sass
-  static_dir: sass
+entrypoint: serve index.php
+
+handlers:
+  - url: /(.+\.(css|js|png|jpg|gif|ico|woff|woff2|ttf|svg|eot))
+    static_files: \1
+    upload: .+\.(css|js|png|jpg|gif|ico|woff|woff2|ttf|svg|eot)
+
+  - url: /.*
+    script: auto
