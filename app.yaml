@@ -1,7 +1,5 @@
 runtime: php81
 
-#entrypoint: serve login.php
-
 handlers:
   - url: /css
     static_dir: css
@@ -11,18 +9,17 @@ handlers:
 
   - url: /img
     static_dir: img
-    
+
   - url: /js
     static_dir: js
 
   - url: /sass
     static_dir: sass
-    
-    
-# Tangani semua file PHP yang valid
-  - url: /(.*\.php)
+
+  # Tangani semua file .php langsung
+  - url: /(.+\.php)$
     script: \1
 
-  # Default handler jika file tidak cocok, arahkan ke login.php atau file utama
+  # Tangani root atau URL lainnya, arahkan ke login.php
   - url: /.*
     script: login.php
