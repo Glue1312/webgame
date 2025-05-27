@@ -18,8 +18,6 @@ handlers:
   - url: /sass
     static_dir: sass
     
-  - url: /.*
-    script: auto
     
 # Tangani semua file PHP yang valid
   - url: /(.*\.php)
