@@ -3,9 +3,20 @@ runtime: php81
 entrypoint: serve login.php
 
 handlers:
-  - url: /(.+\.(css|js|png|jpg|gif|ico|woff|woff2|ttf|svg|eot))
-    static_files: \1
-    upload: .+\.(css|js|png|jpg|gif|ico|woff|woff2|ttf|svg|eot)
+  - url: /css
+    static_dir: css
 
+  - url: /fonts
+    static_dir: fonts
+
+  - url: /img
+    static_dir: img
+    
+  - url: /js
+    static_dir: js
+
+  - url: /sass
+    static_dir: sass
+    
   - url: /.*
     script: auto
