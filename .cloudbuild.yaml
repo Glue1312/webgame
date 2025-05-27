@@ -1,6 +1,10 @@
 options:
   logging: CLOUD_LOGGING_ONLY
 
+
 steps:
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['app', 'deploy', '--quiet']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['app', 'versions', 'delete', '--service=default', '-q']
+  
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['app', 'deploy', '--promote', '--no-cache']
