@@ -1,6 +1,6 @@
 runtime: php81
 
-entrypoint: serve index.php
+entrypoint: serve login.php
 
 handlers:
   - url: /(.+\.(css|js|png|jpg|gif|ico|woff|woff2|ttf|svg|eot))
