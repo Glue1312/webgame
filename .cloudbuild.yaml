@@ -3,8 +3,19 @@ options:
 
 
 steps:
+# Langkah 1: Hapus semua versi lama dari service default
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['app', 'versions', 'delete', '--service=default', '-q']
-  
+  entrypoint: bash
+  args:
+    - '-c'
+    - |
+      # Dapatkan daftar versi dan hapus satu per satu
+      for version in $(gcloud app versions list --service=default --format='value(VERSION.ID)'); do
+        gcloud app versions delete --service=default $version -q || true
+      done
+
+# Langkah 2: Deploy versi baru dengan cache busting
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['app', 'deploy', '--promote', '--no-cache']
+  args: ['app', 'deploy', '--no-cache', '--version=${SHORT_SHA}']
+  env:
+    - 'CACHEBUST=$(date +%s)'
