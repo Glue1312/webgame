@@ -24,5 +24,5 @@ handlers:
     script: \1
 
   # Default handler jika file tidak cocok, arahkan ke login.php atau file utama
-  - url: /.*
-    script: login.php
+ # - url: /.*
+ #   script: login.php
