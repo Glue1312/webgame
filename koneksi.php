@@ -1,8 +1,8 @@
 <?php
-	$hostname	= "localhost"; //bawaan
-	$username	= "root"; //bawaan
+	$hostname	= "gamebos"; //bawaan
+	$username	= "ester"; //bawaan
 	$password	= ""; //kosong
-	$database	= "pa_web"; //nama database yang akan dikoneksikan
+	$database	= "gamebosdb"; //nama database yang akan dikoneksikan
 
 	$connect	= new mysqli($hostname, $username, $password, $database); //query koneksi
 
