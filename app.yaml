@@ -18,18 +18,12 @@ handlers:
   - url: /sass
     static_dir: sass  
     
-  - url: /login\.php
-    script: login.php
-    secure: always
 
-  - url: /register\.php
-    script: register.php
-    secure: always
    
 # Tangani semua file PHP yang valid
   - url: /(.*\.php)
     script: \1
 
   # Default handler jika file tidak cocok, arahkan ke login.php atau file utama
-  - url: /.*
-    script: login.php
+ # - url: /.*
+  #  script: login.php
