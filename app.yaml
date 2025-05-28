@@ -21,8 +21,8 @@ handlers:
 
    
 # Tangani semua file PHP yang valid
-  - url: /(.*\.php)
-    script: \1
+  - url: /register.php
+    script: register.php
 
   # Default handler jika file tidak cocok, arahkan ke login.php atau file utama
  # - url: /.*
