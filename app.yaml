@@ -1,6 +1,6 @@
 runtime: php81
 
-#entrypoint: serve login.php
+entrypoint: serve index.php
 
 handlers:
   - url: /css
