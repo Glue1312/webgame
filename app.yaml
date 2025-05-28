@@ -1,6 +1,6 @@
 runtime: php81
 
-entrypoint: serve login.php
+#entrypoint: serve login.php
 
 handlers:
   - url: /css
@@ -17,6 +17,14 @@ handlers:
 
   - url: /sass
     static_dir: sass  
+    
+  - url: /login\.php
+    script: login.php
+    secure: always
+
+  - url: /register\.php
+    script: register.php
+    secure: always
    
 # Tangani semua file PHP yang valid
   - url: /(.*\.php)
