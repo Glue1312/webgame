@@ -85,26 +85,26 @@
                             }
                         }
                         ?></p>
-                        <form method="POST" action="user_login_proses.php">
-                            <div class="input__item">
-                                <input type="text" placeholder="username" name="username">
-                                <span class="icon_mail"></span>
-                            </div>
-                            <div class="input__item">
-                                <input type="password" placeholder="Password" name="password">
-                                <span class="icon_lock"></span>
-                            </div>
-                            <button type="submit" class="site-btn">Login Now</button>
-                        </form>
-                        <a href="admin_jenis_login.php?jenis_login=admin" class="forget_pass">Login as Admin?</a>
+                       <form method="POST" action="index.php?page=user_login_proses">
+    <div class="input__item">
+        <input type="text" placeholder="username" name="username">
+        <span class="icon_mail"></span>
+    </div>
+    <div class="input__item">
+        <input type="password" placeholder="Password" name="password">
+        <span class="icon_lock"></span>
+    </div>
+    <button type="submit" class="site-btn">Login Now</button>
+</form>
+<a href="index.php?page=admin_jenis_login&jenis_login=admin" class="forget_pass">Login as Admin?</a>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="login__register">
-                        <h3>Dont’t Have An Account?</h3>
-                        <a href="registrasi.php" class="primary-btn">Register Now</a>
-                    </div>
-                </div>
+              <div class="col-lg-6">
+    <div class="login__register">
+        <h3>Dont’t Have An Account?</h3>
+        <a href="index.php?page=registrasi" class="primary-btn">Register Now</a>
+    </div>
+</div>
             </div>
             
         </div>
