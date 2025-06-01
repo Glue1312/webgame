@@ -1,4 +1,4 @@
-<?php 
+<?php
 	session_start();
 	include 'koneksi.php';
 
@@ -11,11 +11,12 @@
 	if($cek > 0)
 	{
 		$_SESSION['username'] = $username;
-		$_SESSION['status'] = "Login";
-		header("location:admin_dashboard.php");
+		$_SESSION['status'] = "Login"; // Status umum
+        $_SESSION['jenis_login'] = "admin"; // Tandai sebagai admin
+		header("location: index.php?page=admin_dashboard"); // Perubahan di sini
 	}
 	else
 	{
-		header("location:admin_login.php?pesan=gagal");
+		header("location: index.php?page=admin_login&pesan=gagal"); // Perubahan di sini
 	}
 ?>
