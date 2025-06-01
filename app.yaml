@@ -1,32 +1,22 @@
-runtime: php83 # atau versi PHP lain yang didukung (misal: php82, php81)
+runtime: php83
 
 entrypoint: serve index.php
 
 handlers:
-  # Handler untuk aset statis (CSS, JS, Gambar, Fonts)
   - url: /css
     static_dir: css
-
   - url: /fonts
     static_dir: fonts
-
   - url: /img
     static_dir: img
-
   - url: /js
     static_dir: js
-
-  # Handler untuk folder sass (jika memang file .scss perlu diakses langsung,
-  # biasanya tidak diperlukan di production karena sudah dicompile ke CSS)
-  # Jika tidak, Anda bisa menghapus handler ini.
-  - url: /sass
-    static_dir: sass  
-
-  # Hapus handler spesifik untuk /(.*\.(php))$ jika menggunakan entrypoint,
-  # karena entrypoint sudah menangani index.php, dan index.php akan me-routing
-  # permintaan ke file PHP lain.
-
-  # Default handler untuk semua permintaan lain, arahkan ke entrypoint (index.php)
   - url: /.*
-    script: auto # 'auto' akan menggunakan entrypoint yang telah didefinisikan
-    secure: always # Selalu gunakan HTTPS (direkomendasikan)
+    script: auto
+    secure: always
+
+env_variables:
+  DB_SOCKET: '/cloudsql/e-03-452916:us-central1:gamebos' # Instance connection name Anda
+  DB_NAME: 'gamebosdb' # Nama database Anda
+  DB_USER: 'ester' # Username database Anda
+  DB_PASS: 'PASSWORD_KUAT_ANDA' # GANTI DENGAN PASSWORD KUAT YANG SUDAH ANDA BUAT
