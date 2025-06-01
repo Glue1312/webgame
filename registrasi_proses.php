@@ -1,4 +1,4 @@
-<?php 
+<?php
 	include 'koneksi.php';
 
 	$username		= $_POST['username'];
@@ -6,26 +6,22 @@
 	$email			= $_POST['email'];
 	$no_telp		= $_POST['no_telp'];
 
-	$sql    = "SELECT * FROM user";
-    $query    = mysqli_query($connect, $sql);
+	$sql_check    = "SELECT * FROM user WHERE username = '$username'"; // Query lebih aman
+    $query_check  = mysqli_query($connect, $sql_check);
 
-    while ($data = mysqli_fetch_array($query)) 
-    {
-    	if($data['username'] == $username)
-    	{
-    		echo "<script>alert('Username Sudah Digunakan!');history.go(-1); </script>";
-    	}    
-    }                   
-
+    if (mysqli_num_rows($query_check) > 0) {
+        echo "<script>alert('Username Sudah Digunakan!');history.go(-1); </script>";
+        exit; // Hentikan eksekusi jika username sudah ada
+    }
 
 	$sql	= "INSERT INTO user VALUES('','$username', '$password' ,'$email','$no_telp', NOW())";
 
 	$query	= mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$last_id = mysqli_insert_id($connect);
 
-	if ($query) 
+	if ($query)
 	{
-		echo "<script>alert('Registrasi Berhasil! No Id kamu $last_id');window.location='login.php' </script>";
+		echo "<script>alert('Registrasi Berhasil! No Id kamu $last_id');window.location='index.php?page=login' </script>"; // Perubahan di sini
 	}
 	else
 	{
