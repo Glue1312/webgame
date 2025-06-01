@@ -8,29 +8,34 @@ session_start();
 define('BASE_PATH', __DIR__ . '/'); // Mendefinisikan path dasar aplikasi
 
 // --- Mendapatkan Halaman yang Diminta ---
-$default_page_logged_out = 'login'; // Halaman default jika belum login
-$default_page_logged_in  = 'admin_dashboard'; // Halaman default jika sudah login
+$default_page_logged_out_user = 'login'; // Halaman default user jika belum login
+$default_page_logged_out_admin = 'admin_login'; // Halaman default admin jika belum login
+$default_page_logged_in_user  = 'user_dashboard'; // Halaman default user jika sudah login
+$default_page_logged_in_admin  = 'admin_dashboard'; // Halaman default admin jika sudah login
 
 // Ambil nilai 'page' dari query string URL
 $page_param = isset($_GET['page']) ? trim($_GET['page']) : null;
+$page = $page_param;
 
 // Tentukan halaman yang akan dimuat berdasarkan status login jika parameter 'page' kosong
 if (empty($page_param)) {
-    if (isset($_SESSION['user_id'])) { // Asumsikan 'user_id' diset di sesi setelah login berhasil
-        $page = $default_page_logged_in;
+    if (isset($_SESSION['jenis_login']) && $_SESSION['jenis_login'] == 'admin' && isset($_SESSION['username'])) {
+        $page = $default_page_logged_in_admin;
+    } elseif (isset($_SESSION['id_user']) && isset($_SESSION['username'])) { // Menggunakan id_user untuk user biasa
+        $page = $default_page_logged_in_user;
     } else {
-        $page = $default_page_logged_out;
+        // Jika tidak ada sesi aktif sama sekali, arahkan ke login umum
+        $page = $default_page_logged_out_user;
     }
-} else {
-    $page = $page_param;
 }
 
 // --- Halaman yang Membutuhkan Autentikasi ---
-// Daftar 'key' dari $allowed_pages yang memerlukan login untuk diakses
-$auth_required_pages = [
+// Daftar 'key' dari $allowed_pages yang memerlukan login ADMIN untuk diakses
+$admin_auth_required_pages = [
     'admin_dashboard',
     'admin_data_game',
     'admin_data_transaksi',
+    'admin_data_user', // Pastikan ini ada
     'admin_edit_game',
     'admin_edit_game_proses',
     'admin_hapus_game',
@@ -40,51 +45,83 @@ $auth_required_pages = [
     'admin_tambah_game_proses',
     'admin_tambah_user',
     'admin_tambah_user_proses',
-    // Tambahkan halaman admin lainnya yang memerlukan login di sini
 ];
 
-// --- Logika Autentikasi Sederhana ---
-// Periksa apakah halaman yang diminta memerlukan autentikasi dan apakah pengguna sudah login
-if (in_array($page, $auth_required_pages) && !isset($_SESSION['user_id'])) {
-    // Jika halaman butuh login dan user belum login, redirect ke halaman login
-    // Sertakan halaman tujuan agar bisa kembali setelah login berhasil
-    $redirect_url = 'index.php?page=login';
-    if ($page_param) { // Hanya tambahkan redirect_to jika halaman diminta secara eksplisit
-        $redirect_url .= '&redirect_to=' . urlencode($page_param);
+// Daftar 'key' dari $allowed_pages yang memerlukan login USER BIASA untuk diakses
+$user_auth_required_pages = [
+    'user_dashboard',
+    'user_games',
+    'user_edit',
+    'user_edit_proses',
+    'user_view_game',
+    'user_transaksi_beli',
+    'user_transaksi_beli_cek',
+    'user_proses_transaksi_beli',
+];
+
+
+// --- Logika Autentikasi ---
+if (in_array($page, $admin_auth_required_pages)) {
+    // Cek apakah admin sudah login
+    if (!(isset($_SESSION['username']) && isset($_SESSION['jenis_login']) && $_SESSION['jenis_login'] == 'admin')) {
+        $redirect_url = 'index.php?page=admin_login&pesan=belum_login';
+        if ($page_param) {
+            $redirect_url .= '&redirect_to=' . urlencode($page_param);
+        }
+        header('Location: ' . $redirect_url);
+        exit;
     }
-    header('Location: ' . $redirect_url);
-    exit; // Pastikan skrip berhenti setelah redirect
+} elseif (in_array($page, $user_auth_required_pages)) {
+    // Cek apakah user biasa sudah login
+    if (!(isset($_SESSION['id_user']) && isset($_SESSION['username']))) { // Menggunakan id_user
+        $redirect_url = 'index.php?page=login&pesan=belum_login';
+        if ($page_param) {
+            $redirect_url .= '&redirect_to=' . urlencode($page_param);
+        }
+        header('Location: ' . $redirect_url);
+        exit;
+    }
 }
 
+
 // --- Routing Sederhana ---
-// Daftar halaman yang valid dan file PHP yang sesuai.
-// 'key' adalah apa yang akan Anda gunakan di URL (misal, index.php?page=key)
-// 'value' adalah nama file PHP aktual yang akan di-include.
-// Sesuaikan daftar ini dengan nama file PHP yang Anda miliki di proyek.
 $allowed_pages = [
     'login'                     => 'login.php',
-    'login_proses'              => 'admin_login_proses.php', // File untuk memproses login
-    'logout'                    => 'logout.php',             // File untuk proses logout
+    'user_login_proses'         => 'user_login_proses.php',
+    'registrasi'                => 'registrasi.php',
+    'registrasi_proses'         => 'registrasi_proses.php',
+    'logout'                    => 'logout.php',
 
-    // Halaman Admin (sesuaikan dengan nama file Anda)
+    // Halaman User
+    'user_dashboard'            => 'user_dashboard.php',
+    'user_games'                => 'user_games.php',
+    'user_edit'                 => 'user_edit.php',
+    'user_edit_proses'          => 'user_edit_proses.php',
+    'user_view_game'            => 'user_view_game.php',
+    'user_transaksi_beli'       => 'user_transaksi_beli.php',
+    'user_transaksi_beli_cek'   => 'user_transaksi_beli_cek.php',
+    'user_proses_transaksi_beli'=> 'user_proses_transaksi_beli.php',
+
+    // Halaman Admin
+    'admin_login'               => 'admin_login.php',
+    'admin_login_proses'        => 'admin_login_proses.php',
+    'admin_jenis_login'         => 'admin_jenis_login.php',
     'admin_dashboard'           => 'admin_dashboard.php',
     'admin_data_game'           => 'admin_data_game.php',
     'admin_data_transaksi'      => 'admin_data_transaksi.php',
+    'admin_data_user'           => 'admin_data_user.php',
 
     'admin_tambah_game'         => 'admin_tambah_game.php',
     'admin_tambah_game_proses'  => 'admin_tambah_game_proses.php',
     'admin_edit_game'           => 'admin_edit_game.php',
     'admin_edit_game_proses'    => 'admin_edit_game_proses.php',
-    'admin_hapus_game'          => 'admin_hapus_game.php', // Biasanya file proses
+    'admin_hapus_game'          => 'admin_hapus_game.php',
 
     'admin_tambah_user'         => 'admin_tambah_user.php',
     'admin_tambah_user_proses'  => 'admin_tambah_user_proses.php',
-    'admin_hapus_user'          => 'admin_hapus_user.php',    // Biasanya file proses
+    'admin_hapus_user'          => 'admin_hapus_user.php',
 
-    'admin_hapus_transaksi'     => 'admin_hapus_transaksi.php', // Biasanya file proses
-    
-    // Anda bisa menambahkan halaman lain di sini, misalnya:
-    // 'profil_pengguna'        => 'user_profile.php',
+    'admin_hapus_transaksi'     => 'admin_hapus_transaksi.php',
 ];
 
 // --- Memuat Halaman atau File Proses ---
@@ -92,40 +129,14 @@ if (array_key_exists($page, $allowed_pages)) {
     $page_file_path = BASE_PATH . $allowed_pages[$page];
 
     if (file_exists($page_file_path)) {
-        // Anda mungkin ingin memiliki template header dan footer umum yang di-include di sini
-        // if (should_show_layout($page)) { // Fungsi helper untuk cek apakah layout perlu ditampilkan
-        //    include BASE_PATH . 'templates/header.php';
-        // }
-
-        include $page_file_path; // Ini akan menjalankan/memuat file PHP yang dituju
-
-        // if (should_show_layout($page)) {
-        //    include BASE_PATH . 'templates/footer.php';
-        // }
+        include $page_file_path;
     } else {
-        // Error: File halaman tidak ditemukan (kesalahan konfigurasi atau file hilang)
-        http_response_code(500); // Internal Server Error
+        http_response_code(500);
         echo "Error: File untuk halaman '<strong>" . htmlspecialchars($page) . "</strong>' tidak dapat ditemukan (expected: " . htmlspecialchars($allowed_pages[$page]) . ").";
-        error_log("Controller error: File not found for page '{$page}'. Expected '{$allowed_pages[$page]}'"); // Catat di log server
+        error_log("Controller error: File not found for page '{$page}'. Expected '{$allowed_pages[$page]}'");
     }
 } else {
-    // Halaman tidak ada dalam daftar $allowed_pages (tidak valid)
-    http_response_code(404); // Not Found
-    // Anda bisa membuat file 404.php khusus dan meng-include-nya di sini
-    // include BASE_PATH . '404.php'; 
+    http_response_code(404);
     echo "Error 404: Halaman '<strong>" . htmlspecialchars($page) . "</strong>' tidak ditemukan.";
 }
-
-/*
-// Contoh fungsi helper (opsional, letakkan di atas atau di file terpisah yang di-include)
-// Untuk menentukan apakah halaman ini adalah halaman "proses" yang tidak butuh layout HTML
-function should_show_layout($page_key) {
-    // Halaman proses biasanya tidak menampilkan HTML/layout
-    if (strpos($page_key, '_proses') !== false || in_array($page_key, ['logout'])) {
-        return false;
-    }
-    // Halaman lain yang mungkin tidak butuh layout bisa ditambahkan di sini
-    return true;
-}
-*/
 ?>
