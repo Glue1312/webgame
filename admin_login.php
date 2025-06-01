@@ -83,18 +83,18 @@
                             }
                         }
                         ?>
-                        <form method="POST" action="admin_login_proses.php">
-                            <div class="input__item">
-                                <input type="text" placeholder="username" name="username">
-                                <span class="icon_mail"></span>
-                            </div>
-                            <div class="input__item">
-                                <input type="password" placeholder="Password" name="password">
-                                <span class="icon_lock"></span>
-                            </div>
-                            <button type="submit" class="site-btn">Login Admin</button>
-                        </form>
-                        <a href="login.php" class="forget_pass">Return</a>
+                      <form method="POST" action="index.php?page=admin_login_proses">
+    <div class="input__item">
+        <input type="text" placeholder="username" name="username">
+        <span class="icon_mail"></span>
+    </div>
+    <div class="input__item">
+        <input type="password" placeholder="Password" name="password">
+        <span class="icon_lock"></span>
+    </div>
+    <button type="submit" class="site-btn">Login Admin</button>
+</form>
+<a href="index.php?page=login" class="forget_pass">Return</a>
                     </div>
                 </div>
                 
