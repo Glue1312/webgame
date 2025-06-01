@@ -73,31 +73,31 @@
                     <div class="login__form">
                         <h3>Akun Baru</h3><br>
 
-                        <form method="POST" action="registrasi_proses.php">
-                            <div class="input__item">
-                                <input type="text" name="username" required placeholder="Username"> 
-                                <span class="icon_mail"></span>
-                            </div>                            
-                            <div class="input__item">
-                                <input type="Email" name="email" required placeholder="Email"> <span class="icon_mail"></span>
-                            </div>
-                            <div class="input__item">
-                                <input type="text" name="no_telp" required placeholder="No Telp"> <span class="icon_mail"></span>
-                            </div>
-                            <div class="input__item">
-                                <input type="password" name="password" required placeholder="Password"> 
-                                <span class="icon_lock"></span>
-                            </div>
-                            <button type="submit" class="site-btn">Tambahkan</button>
-                        </form>
+                        <form method="POST" action="index.php?page=registrasi_proses">
+    <div class="input__item">
+        <input type="text" name="username" required placeholder="Username">
+        <span class="icon_mail"></span>
+    </div>
+    <div class="input__item">
+        <input type="Email" name="email" required placeholder="Email"> <span class="icon_mail"></span>
+    </div>
+    <div class="input__item">
+        <input type="text" name="no_telp" required placeholder="No Telp"> <span class="icon_mail"></span>
+    </div>
+    <div class="input__item">
+        <input type="password" name="password" required placeholder="Password">
+        <span class="icon_lock"></span>
+    </div>
+    <button type="submit" class="site-btn">Tambahkan</button>
+</form>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="login__register">
-                        <h3>Punya Akun?</h3>
-                        <a href="login.php" class="primary-btn">Login</a>
-                    </div>
-                </div>
+               <div class="col-sm-3">
+    <div class="login__register">
+        <h3>Punya Akun?</h3>
+        <a href="index.php?page=login" class="primary-btn">Login</a>
+    </div>
+</div>
 
             </div>
 
