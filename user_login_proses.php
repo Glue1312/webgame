@@ -1,4 +1,4 @@
-<?php 
+<?php
 	session_start();
 	include 'koneksi.php';
 
@@ -8,20 +8,22 @@
 	$query = mysqli_query($connect, "SELECT * FROM user where username='$username' and password='$password'") or die (mysqli_error($connect));
 	$cek = mysqli_num_rows($query);
 
-    while ($data = mysqli_fetch_array($query)) 
-    {
-    	$id_user = $data['id_user'];
+    $id_user_val = null; // Inisialisasi
+    if ($cek > 0) {
+        $data = mysqli_fetch_array($query);
+    	$id_user_val = $data['id_user'];
     }
 
 	if($cek > 0)
 	{
-		$_SESSION['id_user'] = $id_user;
+		$_SESSION['id_user'] = $id_user_val; // Menggunakan variabel yang sudah dicek
 		$_SESSION['username'] = $username;
-		$_SESSION['status'] = "Login";
-		header("location:user_dashboard.php");
+		$_SESSION['status'] = "Login"; // Status umum
+        $_SESSION['jenis_login'] = "user"; // Tandai sebagai user biasa
+		header("location: index.php?page=user_dashboard"); // Perubahan di sini
 	}
 	else
 	{
-		header("location:login.php?pesan=gagal");
+		header("location: index.php?page=login&pesan=gagal"); // Perubahan di sini
 	}
 ?>
