@@ -19,4 +19,4 @@ env_variables:
   DB_SOCKET: '/cloudsql/e-03-452916:us-central1:gamebos' # Instance connection name Anda
   DB_NAME: 'gamebosdb' # Nama database Anda
   DB_USER: 'ester' # Username database Anda
-  DB_PASS: 'PASSWORD_KUAT_ANDA' # GANTI DENGAN PASSWORD KUAT YANG SUDAH ANDA BUAT
+  DB_PASS: '' # GANTI DENGAN PASSWORD KUAT YANG SUDAH ANDA BUAT
