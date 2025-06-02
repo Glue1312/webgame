@@ -54,7 +54,7 @@ if (!(isset($_SESSION['id_user']) && isset($_SESSION['username']))) { // Pastika
                         <nav class="header__menu mobile-menu">
                             <ul>
                                 <li class="active"><a href="index.php?page=user_dashboard">Homepage</a></li>
-                                <li><a href="index.php?page=user_game">My Library </a>                                   
+                                <li><a href="index.php?page=user_games">My Library </a>                                   
                                 </li>
                                
                             </ul>
@@ -103,7 +103,7 @@ if (!(isset($_SESSION['id_user']) && isset($_SESSION['username']))) { // Pastika
                                 <h2>Elden Ring</h2>
                                 <p>THE NEW FANTASY ACTION RPG. Rise, Tarnished, and be guided by grace to brandish the
                                     power of the Elden Ring and become an Elden Lord in the Lands Between.</p>
-                                <a href="index.php?page=user_transaksi_beli?id_game=32"><span>Buy Now</span> <i class="fa fa-angle-right"></i></a>
+                                <a href="index.php?page=user_transaksi_beli&id_game=32"><span>Buy Now</span> <i class="fa fa-angle-right"></i></a>
                                 <br><br><br><br><br>
                             </div>
                         </div>
@@ -117,7 +117,7 @@ if (!(isset($_SESSION['id_user']) && isset($_SESSION['username']))) { // Pastika
                                 <h2>Call of Duty®: Modern Warfare® II</h2>
                                 <p>Call of Duty®: Modern Warfare® II drops players into an unprecedented global conflict
                                     that features the return of the iconic Operators of Task Force 141.</p>
-                                <a href="index.php?page=user_transaksi_beli?id_game=26"><span>Buy Now</span> <i class="fa fa-angle-right"></i></a>
+                                <a href="index.php?page=user_transaksi_beli&id_game=26"><span>Buy Now</span> <i class="fa fa-angle-right"></i></a>
                                 <br><br><br>
                             </div>
                         </div>
@@ -133,7 +133,7 @@ if (!(isset($_SESSION['id_user']) && isset($_SESSION['username']))) { // Pastika
                                     epic fantasy to life in stunning detail. The Special Edition includes the critically
                                     acclaimed game and add-ons with all-new features like remastered art and effects,
                                     volumetric god rays, dynamic depth of field, screen-space...</p>
-                                <a href="index.php?page=user_transaksi_beli?id_game=33"><span>Buy Now</span> <i class="fa fa-angle-right"></i></a>
+                                <a href="index.php?page=user_transaksi_beli&id_game=33"><span>Buy Now</span> <i class="fa fa-angle-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -176,7 +176,7 @@ if (!(isset($_SESSION['id_user']) && isset($_SESSION['username']))) { // Pastika
                                             <li><?= $data['genre_2']; ?></li>
                                             <li><?= $data['genre_3']; ?></li>
                                         </ul>
-                                        <h5><a href="index.php?page=user_transaksi_beli?id_game=<?php echo $data['id_game'];?>"><?= $data['nama_game']; ?></a></h5>
+                                        <h5><a href="index.php?page=user_transaksi_beli&id_game=<?php echo $data['id_game'];?>"><?= $data['nama_game']; ?></a></h5>
                                     </div>
                                 </div>
                             </div>
@@ -197,27 +197,27 @@ if (!(isset($_SESSION['id_user']) && isset($_SESSION['username']))) { // Pastika
                             <div class="filter__gallery">
                                 <div class="product__sidebar__view__item set-bg" data-setbg="img/dragon.jpg">
                                     <div class="ep">8,2 / 10 Rating</div>
-                                    <h5><a href="index.php?page=user_transaksi_beli?id_game=27">Dragon Age: Inquisition</a></h5>
+                                    <h5><a href="index.php?page=user_transaksi_beli&id_game=27">Dragon Age: Inquisition</a></h5>
                                 </div>
                                 <div class="filter__gallery">
                                     <div class="product__sidebar__view__item set-bg" data-setbg="img/witcher.jpg">
                                         <div class="ep">8,3 / 10 Rating</div>
-                                        <h5><a href="index.php?page=user_transaksi_beli?id_game=28">The Witcher 3: Wild Hunt</a></h5>
+                                        <h5><a href="index.php?page=user_transaksi_beli&id_game=28">The Witcher 3: Wild Hunt</a></h5>
                                     </div>
                                     <div class="filter__gallery">
                                         <div class="product__sidebar__view__item set-bg" data-setbg="img/ragnarok.jpg">
                                             <div class="ep">8,1 / 10 Rating</div>
-                                            <h5><a href="index.php?page=user_transaksi_beli?id_game=29">God of War</a></h5>
+                                            <h5><a href="index.php?page=user_transaksi_beli&id_game=29">God of War</a></h5>
                                         </div>
                                         <div class="filter__gallery">
                                             <div class="product__sidebar__view__item set-bg" data-setbg="img/sekiro.jpg">
                                                 <div class="ep">8 / 10 Rating</div>
-                                                <h5><a href="index.php?page=user_transaksi_beli?id_game=1">Sekiro: Shadows Die Twice</a></h5>
+                                                <h5><a href="index.php?page=user_transaksi_beli&id_game=1">Sekiro: Shadows Die Twice</a></h5>
                                             </div>
                                             <div class="filter__gallery">
                                                 <div class="product__sidebar__view__item set-bg" data-setbg="img/buy/31.jpg">
                                                     <div class="ep">8,6 / 10 Rating</div>
-                                                    <h5><a href="index.php?page=user_transaksi_beli?id_game=31">It Takes Two</a></h5>
+                                                    <h5><a href="index.php?page=user_transaksi_beli&id_game=31">It Takes Two</a></h5>
                                                 </div>
 
                                             </div>
