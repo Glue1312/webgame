@@ -1,29 +1,19 @@
 <?php
 session_start();
-if ($_SESSION['jenis_login'] != 'admin') {
-    header("location:login.php?pesan=belum_login_admin");
-} else if (empty($_SESSION['username'])) {
-    header("location:admin_login.php?pesan=belum_login");
+if (!(isset($_SESSION['username']) && isset($_SESSION['jenis_login']) && $_SESSION['jenis_login'] == 'admin')) {
+    header("location: index.php?page=admin_login&pesan=belum_login_admin");
+    exit;
 }
+include 'koneksi.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="zxx">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Anime Template">
-    <meta name="keywords" content="Anime, unica, creative, html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Transaksi LGS</title>
+    <title>Data Transaksi - LGS</title>
     <link rel="shortcut icon" href="img/1.png">
-
-    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- Css Styles -->
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
@@ -33,21 +23,15 @@ if ($_SESSION['jenis_login'] != 'admin') {
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
-
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
-
-    <!-- Header Section Begin -->
+    <div id="preloder"><div class="loader"></div></div>
     <header class="header">
         <div class="container">
             <div class="row">
                 <div class="col-lg-2">
                     <div class="header__logo">
-                        <a href="admin_dashboard.php">
-                            <img src="img/1.png" alt=""> <!-- Logo Toko--->
+                        <a href="index.php?page=admin_dashboard">
+                            <img src="img/1.png" alt="LGS Logo">
                         </a>
                     </div>
                 </div>
@@ -55,10 +39,10 @@ if ($_SESSION['jenis_login'] != 'admin') {
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li><a href="admin_dashboard.php">Homepage</a></li>
-                                <li><a href="admin_data_game.php">Games </a></li>
-                                <li class="active"><a href="admin_data_transaksi.php">Transaksi</a></li>
-                                <li><a href="admin_data_user.php">User</a></li>
+                                <li><a href="index.php?page=admin_dashboard">Homepage</a></li>
+                                <li><a href="index.php?page=admin_data_game">Games </a></li>
+                                <li class="active"><a href="index.php?page=admin_data_transaksi">Transaksi</a></li>
+                                <li><a href="index.php?page=admin_data_user">User</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -67,139 +51,80 @@ if ($_SESSION['jenis_login'] != 'admin') {
                     <div class="header__nav ms-auto">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li><a href="#">Hallo <?php echo $_SESSION['username'] ?> <span class="arrow_carrot-down"></span></a>
+                                <li><a href="#">Hallo <?php echo htmlspecialchars($_SESSION['username']); ?> <span class="arrow_carrot-down"></span></a>
                                     <ul class="dropdown">
-                                        <li><a href="logout.php?">Logout</a></li>
+                                        <li><a href="index.php?page=logout">Logout</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </nav>
                     </div>
-
                 </div>
             </div>
         </div>
         <div id="mobile-menu-wrap"></div>
-
     </header>
-    <!-- Header End -->
 
-    <!-- Product Section Begin -->
     <section class="product spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="trending__product">
                         <div class="row">
-                            <div class="col-lg-3 col-md-6 col-sm-6">
-                                <div class="section-title">
-                                    <h4>Data Transaksi</h4><br><br>
-
-                                </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="section-title"><h4>Data Transaksi</h4></div>
                             </div>
                         </div>
-
-
-                        <table class="table table-secondary table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Id Transaksi</th>
-                                    <th>Id User</th>
-                                    <th>Id Game</th>
-                                    <th>Nama Game</th>
-                                    <th>Harga</th>
-                                    <th>Tanggal Transaksi</th>
-                                    <th>Key</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <?php
-                            include('koneksi.php');
-
-                            $sql    = "SELECT * FROM transaksi";
-                            $query    = mysqli_query($connect, $sql);
-
-                            while ($data = mysqli_fetch_array($query)) {
-                            ?>
-                                <tbody>
+                        <div class="table-responsive">
+                            <table class="table table-secondary table-striped table-hover">
+                                <thead>
                                     <tr>
-                                        <th><?= $data['id_transaksi']; ?></th>
-                                        <td><?= $data['id_user']; ?></td>
-                                        <td><?= $data['id_game']; ?></td>
-                                        <td><?= $data['nama_game']; ?></td>
-                                        <td><?= $data['harga']; ?></td>
-                                        <td><?= $data['tanggal_transaksi']; ?></td>
-                                        <td><?= $data['key']; ?></td>
+                                        <th>ID Transaksi</th>
+                                        <th>ID User</th>
+                                        <th>ID Game</th>
+                                        <th>Nama Game</th>
+                                        <th>Harga</th>
+                                        <th>Tanggal Transaksi</th>
+                                        <th>Key</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                $sql_transaksi = "SELECT * FROM transaksi ORDER BY id_transaksi DESC";
+                                $query_transaksi = mysqli_query($connect, $sql_transaksi);
+                                if ($query_transaksi && mysqli_num_rows($query_transaksi) > 0) {
+                                    while ($data = mysqli_fetch_array($query_transaksi)) {
+                                ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($data['id_transaksi']); ?></td>
+                                        <td><?php echo htmlspecialchars($data['id_user']); ?></td>
+                                        <td><?php echo htmlspecialchars($data['id_game']); ?></td>
+                                        <td><?php echo htmlspecialchars($data['nama_game']); ?></td>
+                                        <td>Rp. <?php echo htmlspecialchars(number_format($data['harga'], 0, ',', '.')); ?></td>
+                                        <td><?php echo htmlspecialchars(date('d M Y, H:i:s', strtotime($data['tanggal_transaksi']))); ?></td>
+                                        <td><?php echo htmlspecialchars($data['key']); ?></td>
                                         <td>
-                                            <a href="admin_hapus_transaksi.php?id_transaksi=<?php echo $data['id_transaksi']; ?>">Hapus</a>
+                                            <a href="index.php?page=admin_hapus_transaksi&id_transaksi=<?php echo $data['id_transaksi']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus transaksi ini?');">Hapus</a>
                                         </td>
                                     </tr>
+                                <?php
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='8' class='text-center'>Belum ada data transaksi.</td></tr>";
+                                }
+                                ?>
                                 </tbody>
-                            <?php } ?>
-
-                        </table>
-
+                            </table>
+                        </div>
                     </div>
                 </div>
-
-
             </div>
-
+        </div>
     </section>
-    <!-- Product Section End -->
 
-    <!-- Footer Section Begin -->
-    <footer class="footer">
-        <div class="page-up">
-            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="footer__logo">
-                        <a href="admin_dashboard.php"><img src="img/1.png" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-
-                </div>
-                <div class="col-lg-3">
-                    <p>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script> 
-                    </p>
-
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer Section End -->
-
-    <!-- Search model Begin -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch"><i class="icon_close"></i></div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
-    </div>
-    <!-- Search model end -->
-
-    <!-- Js Plugins -->
+    <footer class="footer"></footer>
     <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/player.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-
-
 </body>
-
 </html>
