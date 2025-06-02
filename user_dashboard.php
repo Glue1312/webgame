@@ -1,10 +1,10 @@
 <?php
 session_start();
-if (empty($_SESSION['username'])) {
-    header("location:login.php?pesan=belum_login");
+if (!(isset($_SESSION['id_user']) && isset($_SESSION['username']))) { // Pastikan konsisten dengan index.php
+    header("location: index.php?page=login&pesan=belum_login");
+    exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="zxx">
 
