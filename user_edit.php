@@ -115,7 +115,7 @@ if (!(isset($_SESSION['id_user']) && isset($_SESSION['username']))) { // Pastika
                         $query = mysqli_query($connect, "SELECT * FROM user WHERE id_user=$id_user");
                         $data = mysqli_fetch_array($query);
                         ?>
-                            <form method="POST" action="user_edit_proses.php">
+                            <form method="POST" action="index.php?page=user_edit_proses">
                                 <input type="hidden" name="id_user" value="<?= $id_user?>">
                                 <div class="input__item">
                                     <input type="text" name="username" value="<?= $data['username']; ?>" readonly>
