@@ -86,7 +86,7 @@ if (in_array($page, $admin_auth_required_pages)) {
 
 // --- Routing Sederhana ---
 $allowed_pages = [
-    'login'                     => 'coba.php',
+    'login'                     => 'login.php',
     'user_login_proses'         => 'user_login_proses.php',
     'registrasi'                => 'registrasi.php',
     'registrasi_proses'         => 'registrasi_proses.php',
