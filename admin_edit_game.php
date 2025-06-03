@@ -1,9 +1,46 @@
 <?php
-session_start();
-if ($_SESSION['jenis_login'] != 'admin') {
-    header("location:login.php?pesan=belum_login_admin");
-} else if (empty($_SESSION['username'])) {
-    header("location:admin_login.php?pesan=belum_login");
+// Selalu mulai sesi di baris paling atas
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Autentikasi Admin
+if (!isset($_SESSION['username']) || !isset($_SESSION['jenis_login']) || $_SESSION['jenis_login'] != 'admin') { //
+    header("location: index.php?page=admin_login&pesan=belum_login");
+    exit;
+}
+
+include 'koneksi.php'; //
+
+$id_game_to_edit = null;
+$game_data = null;
+
+if (isset($_GET['id_game']) && filter_var($_GET['id_game'], FILTER_VALIDATE_INT)) {
+    $id_game_to_edit = (int)$_GET['id_game']; //
+
+    // Ambil data game yang akan diedit menggunakan prepared statement
+    $stmt = mysqli_prepare($connect, "SELECT * FROM game WHERE id_game = ?");
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "i", $id_game_to_edit);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $game_data = mysqli_fetch_assoc($result);
+        mysqli_stmt_close($stmt);
+    } else {
+        error_log("Admin Edit Game: Gagal prepare statement untuk mengambil data game: " . mysqli_error($connect));
+        $_SESSION['pesan_error'] = "Gagal mengambil data game untuk diedit.";
+        // Redirect atau tampilkan pesan error, tergantung kebutuhan
+    }
+
+    if (!$game_data) {
+        $_SESSION['pesan_error'] = "Game dengan ID tersebut tidak ditemukan.";
+        header("Location: index.php?page=admin_data_game");
+        exit;
+    }
+} else {
+    $_SESSION['pesan_error'] = "ID Game tidak valid untuk diedit.";
+    header("Location: index.php?page=admin_data_game");
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -15,14 +52,12 @@ if ($_SESSION['jenis_login'] != 'admin') {
     <meta name="keywords" content="Anime, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit Game LGS</title>
+    <title>Edit Game - LGS Admin</title> {/* Judul diubah */}
     <link rel="shortcut icon" href="img/1.png">
 
-    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Css Styles -->
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
@@ -34,12 +69,10 @@ if ($_SESSION['jenis_login'] != 'admin') {
 </head>
 
 <body>
-    <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
 
-    <!-- Header Section Begin -->
     <header class="header">
         <div class="container">
             <div class="row">
@@ -48,7 +81,6 @@ if ($_SESSION['jenis_login'] != 'admin') {
                         <nav class="header__menu mobile-menu">
                             <ul>
                                 <li><a>LGS</a></li>
-
                             </ul>
                         </nav>
                     </div>
@@ -57,10 +89,10 @@ if ($_SESSION['jenis_login'] != 'admin') {
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li><a href="admin_dashboard.php">Homepage</a></li>
-                                <li  class="active"><a href="admin_data_game.php">Games </a></li>
-                                <li><a href="admin_data_transaksi.php">Transaksi</a></li>
-                                <li><a href="admin_data_user.php">User</a></li>
+                                <li><a href="index.php?page=admin_dashboard">Homepage</a></li>
+                                <li class="active"><a href="index.php?page=admin_data_game">Games </a></li>
+                                <li><a href="index.php?page=admin_data_transaksi">Transaksi</a></li>
+                                <li><a href="index.php?page=admin_data_user">User</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -69,147 +101,117 @@ if ($_SESSION['jenis_login'] != 'admin') {
                     <div class="header__nav ms-auto">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li><a href="#">Hallo <?php echo $_SESSION['username'] ?> <span class="arrow_carrot-down"></span></a>
-                                    <ul class="dropdown">                                        
-                                        <li><a href="logout.php?">Logout</a></li>
+                                <li><a href="#">Hallo <?php echo htmlspecialchars($_SESSION['username']); // XSS Prevention ?> <span class="arrow_carrot-down"></span></a>
+                                    <ul class="dropdown">
+                                        <li><a href="index.php?page=logout">Logout</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </nav>
                     </div>
-
                 </div>
             </div>
         </div>
         <div id="mobile-menu-wrap"></div>
-
     </header>
-    <!-- Header End -->
-
-    <!-- Normal Breadcrumb Begin -->
     <section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="normal__breadcrumb__text">
-                        <h2>Edit data game</h2>
+                        <h2>Edit Data Game</h2>
                         <p>Administrator</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Normal Breadcrumb End -->
-
-    <!-- Login Section Begin -->
     <section class="login spad">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-9">
+            <div class="row justify-content-center"> {/* Form dipusatkan */}
+                <div class="col-lg-8"> {/* Form diperlebar */}
                     <div class="login__form">
-                        <h3>Edit</h3><br>
-                        
+                        <h3>Edit Game: <?php echo htmlspecialchars($game_data['nama_game']); ?></h3><br>
                         <?php
-                        include 'koneksi.php';
-                        $id_game = $_GET['id_game'];
-
-                        $query = mysqli_query($connect, "SELECT * FROM game WHERE id_game=$id_game");
-                        $data = mysqli_fetch_array($query);
+                        // Menampilkan pesan error dari session jika ada (misalnya dari proses edit)
+                        if (isset($_SESSION['pesan_error_edit_game'])) {
+                            echo "<p style='color: red;'>" . htmlspecialchars($_SESSION['pesan_error_edit_game']) . "</p>";
+                            unset($_SESSION['pesan_error_edit_game']); // Hapus pesan setelah ditampilkan
+                        }
                         ?>
-                        
-                            <form method="POST" action="admin_edit_game_proses.php" enctype="multipart/form-data">
-                                <div class="input__item">
-                                    <input type="text" name="id_game" value="<?= $data['id_game']; ?>" readonly>
-                                    <span class="icon_lock"></span>
-                                </div>
-                                <div class="input__item">
-                                    <input type="text" name="nama_game" value="<?= $data['nama_game']; ?>">
-                                    <span class="icon_mail"></span>
-                                </div>
-                                <div class="input__item">
-                                    <input type="text" name="nama_dev" value="<?= $data['nama_dev']; ?>"></td>
-                                    <span class="icon_mail"></span>
-                                </div>
-                                <div class="input__item">
-                                    <input type="number" name="harga" value="<?= $data['harga']; ?>"></td>
-                                    <span class="icon_mail"></span>
-                                </div>
-                                <div class="input__item">
-                                    <input type="text" name="genre_1" value="<?= $data['genre_1']; ?>">
-                                    <span class="icon_mail"></span>
-                                </div>
-                                <div class="input__item">
-                                    <input type="text" name="genre_2" value="<?= $data['genre_2']; ?>">
-                                    <span class="icon_mail"></span>
-                                </div>
-                                <div class="input__item">
-                                    <input type="text" name="genre_3" value="<?= $data['genre_3']; ?>">
-                                    <span class="icon_mail"></span>
-                                </div>
-                                <div class="input__item">
-                                    <input type="text" name="spek" value="<?= $data['spek']; ?>">
-                                    <span class="icon_mail"></span>
-                                </div>
-                                <div class="input__item">
-                                <input type="date" name="tanggal_rilis" value="<?=$data['tanggal_rilis'];?>">
-                                    <span class="icon_mail"></span>
-                                </div>
-                                <div class="input__item">
-                                <input class="form-control" type="file" name="fileToUpload">
-                                    <span class="icon_mail"></span>
-                                </div>
-                        
-                        <button type="submit" class="site-btn" value="Upload Image" name="submit">Update</button>
+                        {/* Action form ke index.php, enctype dihapus */}
+                        <form method="POST" action="index.php?page=admin_edit_game_proses">
+                             {/* ID Game tetap dikirim sebagai hidden field */}
+                            <input type="hidden" name="id_game" value="<?php echo htmlspecialchars($game_data['id_game']); ?>">
+                            
+                            <div class="input__item">
+                                <input type="text" name="nama_game" value="<?php echo htmlspecialchars($game_data['nama_game']); ?>" required placeholder="Nama Game">
+                                <span class="icon_tag"></span>
+                            </div>
+                            <div class="input__item">
+                                <input type="text" name="nama_dev" value="<?php echo htmlspecialchars($game_data['nama_dev']); ?>" required placeholder="Developer">
+                                <span class="icon_group"></span>
+                            </div>
+                            <div class="input__item">
+                                <input type="number" name="harga" value="<?php echo htmlspecialchars($game_data['harga']); ?>" required placeholder="Harga" min="0">
+                                <span class="icon_wallet"></span>
+                            </div>
+                            <div class="input__item">
+                                <input type="text" name="genre_1" value="<?php echo htmlspecialchars($game_data['genre_1']); ?>" required placeholder="Genre 1">
+                                <span class="icon_puzzle"></span>
+                            </div>
+                            <div class="input__item">
+                                <input type="text" name="genre_2" value="<?php echo htmlspecialchars($game_data['genre_2']); ?>" placeholder="Genre 2 (Opsional)">
+                                <span class="icon_puzzle"></span>
+                            </div>
+                            <div class="input__item">
+                                <input type="text" name="genre_3" value="<?php echo htmlspecialchars($game_data['genre_3']); ?>" placeholder="Genre 3 (Opsional)">
+                                <span class="icon_puzzle"></span>
+                            </div>
+                            <div class="input__item">
+                                <textarea name="spek" required placeholder="Spesifikasi Minimum" rows="3" style="width:100%; padding-left: 50px; border: none; height: auto; margin-bottom: 20px; background: #fff; color: #b7b7b7; font-size: 15px;"><?php echo htmlspecialchars($game_data['spek']); ?></textarea>
+                                <span class="icon_desktop" style="top: 13px;"></span>
+                            </div>
+                            <div class="input__item">
+                                <input type="date" name="tanggal_rilis" value="<?php echo htmlspecialchars($game_data['tanggal_rilis']); ?>" required>
+                                <span class="icon_calendar"></span>
+                            </div>
+                            {/* Input file dihapus */}
+                            <button type="submit" class="site-btn" name="submit">Update Game</button> {/* name="submit" bisa jadi tidak relevan lagi */}
                         </form>
+                        <div class="text-center mt-3">
+                             {/* Perbaikan Route: Link kembali */}
+                            <a href="index.php?page=admin_data_game" class="primary-btn" style="background-color: #6c757d; border-color: #6c757d;">Batal & Kembali</a>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="login__register">
-                        <h3>Cancel?</h3>
-                        <a href="admin_data_game.php" class="primary-btn">Back</a>
-                    </div>
-                </div>
-
             </div>
-
         </div>
     </section>
-    <!-- Login Section End -->
-
-    <!-- Footer Section Begin -->
     <footer class="footer">
         <div class="page-up">
-            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
+            <a href="#" id="scrollToTopButton"><span class="arrow_carrot_up"></span></a>
         </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="footer__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        <a href="index.php?page=admin_dashboard"><img src="img/1.png" alt="Logo Footer"></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="footer__nav">
-                        <ul>
-
-                        </ul>
+                        <ul></ul>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <p>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script>
-                            document.write(new Date().getFullYear());
-                        </script> 
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>
                     </p>
-
                 </div>
             </div>
         </div>
     </footer>
-    <!-- Footer Section End -->
-
-    <!-- Search model Begin -->
     <div class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-switch"><i class="icon_close"></i></div>
@@ -218,9 +220,6 @@ if ($_SESSION['jenis_login'] != 'admin') {
             </form>
         </div>
     </div>
-    <!-- Search model end -->
-
-    <!-- Js Plugins -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/player.js"></script>
@@ -229,8 +228,5 @@ if ($_SESSION['jenis_login'] != 'admin') {
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-
-
 </body>
-
 </html>
