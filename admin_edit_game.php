@@ -1,61 +1,28 @@
 <?php
 session_start();
-if (!(isset($_SESSION['username']) && isset($_SESSION['jenis_login']) && $_SESSION['jenis_login'] == 'admin')) {
-    header("location: index.php?page=admin_login&pesan=belum_login_admin");
-    exit;
+if ($_SESSION['jenis_login'] != 'admin') {
+    header("location:login.php?pesan=belum_login_admin");
+} else if (empty($_SESSION['username'])) {
+    header("location:admin_login.php?pesan=belum_login");
 }
-include 'koneksi.php';
-
-$id_game_to_edit = isset($_GET['id_game']) ? intval($_GET['id_game']) : 0;
-
-if ($id_game_to_edit <= 0) {
-    header("location: index.php?page=admin_data_game&pesan=id_game_tidak_valid");
-    exit;
-}
-
-$query_game_data = mysqli_query($connect, "SELECT * FROM game WHERE id_game = $id_game_to_edit");
-if ($query_game_data && mysqli_num_rows($query_game_data) > 0) {
-    $data_game_edit = mysqli_fetch_array($query_game_data);
-} else {
-    header("location: index.php?page=admin_data_game&pesan=game_tidak_ditemukan");
-    exit;
-}
-
-$bucketNameEnv = getenv('GCS_BUCKET_NAME') ?: 'ta-tcc';
-$currentImagePath = "img/placeholder.jpg"; // Default jika tidak ada gambar
-
-// Asumsikan nama file gambar adalah id_game.ekstensi
-// Anda perlu cara untuk mengetahui ekstensi yang benar jika bervariasi
-// Untuk contoh, kita coba beberapa ekstensi umum. Ini tidak ideal untuk produksi.
-$possible_extensions_edit = ['jpg', 'png', 'jpeg', 'gif'];
-foreach ($possible_extensions_edit as $ext_edit) {
-    $tempImagePath = "https://storage.googleapis.com/{$bucketNameEnv}/img/game/" . rawurlencode($data_game_edit['id_game']) . "." . $ext_edit;
-    // Cara sederhana untuk cek (tidak selalu akurat & bisa lambat, idealnya simpan nama file lengkap di DB)
-    // $headers_edit = @get_headers($tempImagePath);
-    // if ($headers_edit && strpos($headers_edit[0], '200')) {
-    //    $currentImagePath = $tempImagePath;
-    //    break;
-    // }
-    // Untuk sementara, kita asumsikan .jpg jika tidak ada info ekstensi di DB
-    if ($ext_edit == 'jpg') {
-        $currentImagePath = $tempImagePath;
-    }
-}
-// Jika Anda menyimpan nama_file_gambar lengkap di DB (misal: 123.png):
-// if (!empty($data_game_edit['nama_file_gambar'])) {
-//    $safeImageFileName = basename($data_game_edit['nama_file_gambar']);
-//    $currentImagePath = "https://storage.googleapis.com/{$bucketNameEnv}/img/game/" . rawurlencode($safeImageFileName);
-// }
-
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
+
 <head>
     <meta charset="UTF-8">
-    <title>Edit Game: <?php echo htmlspecialchars($data_game_edit['nama_game']); ?> - LGS</title>
+    <meta name="description" content="Anime Template">
+    <meta name="keywords" content="Anime, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit Game LGS</title>
     <link rel="shortcut icon" href="img/1.png">
+
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
@@ -65,26 +32,35 @@ foreach ($possible_extensions_edit as $ext_edit) {
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
+
 <body>
-    <div id="preloder"><div class="loader"></div></div>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header Section Begin -->
     <header class="header">
         <div class="container">
             <div class="row">
                 <div class="col-lg-2">
-                     <div class="header__logo">
-                        <a href="index.php?page=admin_dashboard">
-                            <img src="img/1.png" alt="LGS Logo">
-                        </a>
+                    <div class="header__nav">
+                        <nav class="header__menu mobile-menu">
+                            <ul>
+                                <li><a>LGS</a></li>
+
+                            </ul>
+                        </nav>
                     </div>
                 </div>
                 <div class="col-lg-8">
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li><a href="index.php?page=admin_dashboard">Homepage</a></li>
-                                <li class="active"><a href="index.php?page=admin_data_game">Games </a></li>
-                                <li><a href="index.php?page=admin_data_transaksi">Transaksi</a></li>
-                                <li><a href="index.php?page=admin_data_user">User</a></li>
+                                <li><a href="admin_dashboard.php">Homepage</a></li>
+                                <li  class="active"><a href="admin_data_game.php">Games </a></li>
+                                <li><a href="admin_data_transaksi.php">Transaksi</a></li>
+                                <li><a href="admin_data_user.php">User</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -93,108 +69,168 @@ foreach ($possible_extensions_edit as $ext_edit) {
                     <div class="header__nav ms-auto">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li><a href="#">Hallo <?php echo htmlspecialchars($_SESSION['username']); ?> <span class="arrow_carrot-down"></span></a>
-                                    <ul class="dropdown">
-                                        <li><a href="index.php?page=logout">Logout</a></li>
+                                <li><a href="#">Hallo <?php echo $_SESSION['username'] ?> <span class="arrow_carrot-down"></span></a>
+                                    <ul class="dropdown">                                        
+                                        <li><a href="logout.php?">Logout</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </nav>
                     </div>
+
                 </div>
             </div>
         </div>
         <div id="mobile-menu-wrap"></div>
-    </header>
 
+    </header>
+    <!-- Header End -->
+
+    <!-- Normal Breadcrumb Begin -->
     <section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="normal__breadcrumb__text">
-                        <h2>Edit Data Game</h2>
-                        <p>Administrator: <?php echo htmlspecialchars($data_game_edit['nama_game']); ?></p>
+                        <h2>Edit data game</h2>
+                        <p>Administrator</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <!-- Normal Breadcrumb End -->
 
+    <!-- Login Section Begin -->
     <section class="login spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-9">
                     <div class="login__form">
-                        <h3>Edit Game Details</h3><br>
-                        <form method="POST" action="index.php?page=admin_edit_game_proses" enctype="multipart/form-data">
-                            <input type="hidden" name="id_game" value="<?php echo htmlspecialchars($data_game_edit['id_game']); ?>">
-                            <div class="input__item">
-                                <label for="nama_game">ID Game (Read-only):</label>
-                                <input type="text" value="<?php echo htmlspecialchars($data_game_edit['id_game']); ?>" readonly>
-                                <span class="icon_key"></span>
-                            </div>
-                            <div class="input__item">
-                                <label for="nama_game">Nama Game:</label>
-                                <input type="text" id="nama_game" name="nama_game" value="<?php echo htmlspecialchars($data_game_edit['nama_game']); ?>" required placeholder="Nama Game">
-                                <span class="icon_document"></span>
-                            </div>
-                            <div class="input__item">
-                                <label for="nama_dev">Developer:</label>
-                                <input type="text" id="nama_dev" name="nama_dev" value="<?php echo htmlspecialchars($data_game_edit['nama_dev']); ?>" required placeholder="Developer">
-                                <span class="icon_briefcase"></span>
-                            </div>
-                            <div class="input__item">
-                                <label for="harga">Harga (Rp):</label>
-                                <input type="number" id="harga" name="harga" value="<?php echo htmlspecialchars($data_game_edit['harga']); ?>" required placeholder="Harga">
-                                <span class="icon_wallet"></span>
-                            </div>
-                            <div class="input__item">
-                                <label for="genre_1">Genre 1:</label>
-                                <input type="text" id="genre_1" name="genre_1" value="<?php echo htmlspecialchars($data_game_edit['genre_1']); ?>" required placeholder="Genre 1">
-                                <span class="icon_tag"></span>
-                            </div>
-                            <div class="input__item">
-                                <label for="genre_2">Genre 2 (Opsional):</label>
-                                <input type="text" id="genre_2" name="genre_2" value="<?php echo htmlspecialchars($data_game_edit['genre_2']); ?>" placeholder="Genre 2">
-                                <span class="icon_tag"></span>
-                            </div>
-                            <div class="input__item">
-                                <label for="genre_3">Genre 3 (Opsional):</label>
-                                <input type="text" id="genre_3" name="genre_3" value="<?php echo htmlspecialchars($data_game_edit['genre_3']); ?>" placeholder="Genre 3">
-                                <span class="icon_tag"></span>
-                            </div>
-                            <div class="input__item">
-                                <label for="spek">Spesifikasi:</label>
-                                <textarea id="spek" name="spek" rows="3" required placeholder="Spesifikasi Minimum" style="width:100%; padding:10px; border:1px solid #e1e1e1; border-radius:5px;"><?php echo htmlspecialchars($data_game_edit['spek']); ?></textarea>
-                            </div>
-                            <div class="input__item">
-                                <label for="tanggal_rilis">Tanggal Rilis:</label>
-                                <input type="date" id="tanggal_rilis" name="tanggal_rilis" value="<?php echo htmlspecialchars($data_game_edit['tanggal_rilis']);?>" required>
-                                <span class="icon_calendar"></span>
-                            </div>
-                             <div class="form-group mb-3">
-                                <label for="fileToUpload">Gambar Game Saat Ini:</label><br>
-                                <img src="<?php echo htmlspecialchars($currentImagePath); ?>" alt="Gambar Game Saat Ini" style="max-width: 200px; max-height: 200px; margin-bottom: 10px; border:1px solid #ddd; object-fit: cover;">
-                                <br>
-                                <label for="fileToUpload">Ganti Gambar (Opsional, .jpg, .jpeg, .png):</label>
-                                <input class="form-control" type="file" id="fileToUpload" name="fileToUpload">
-                            </div>
-                            <button type="submit" class="site-btn" name="submit">Update Game</button>
+                        <h3>Edit</h3><br>
+                        
+                        <?php
+                        include 'koneksi.php';
+                        $id_game = $_GET['id_game'];
+
+                        $query = mysqli_query($connect, "SELECT * FROM game WHERE id_game=$id_game");
+                        $data = mysqli_fetch_array($query);
+                        ?>
+                        
+                            <form method="POST" action="admin_edit_game_proses.php" enctype="multipart/form-data">
+                                <div class="input__item">
+                                    <input type="text" name="id_game" value="<?= $data['id_game']; ?>" readonly>
+                                    <span class="icon_lock"></span>
+                                </div>
+                                <div class="input__item">
+                                    <input type="text" name="nama_game" value="<?= $data['nama_game']; ?>">
+                                    <span class="icon_mail"></span>
+                                </div>
+                                <div class="input__item">
+                                    <input type="text" name="nama_dev" value="<?= $data['nama_dev']; ?>"></td>
+                                    <span class="icon_mail"></span>
+                                </div>
+                                <div class="input__item">
+                                    <input type="number" name="harga" value="<?= $data['harga']; ?>"></td>
+                                    <span class="icon_mail"></span>
+                                </div>
+                                <div class="input__item">
+                                    <input type="text" name="genre_1" value="<?= $data['genre_1']; ?>">
+                                    <span class="icon_mail"></span>
+                                </div>
+                                <div class="input__item">
+                                    <input type="text" name="genre_2" value="<?= $data['genre_2']; ?>">
+                                    <span class="icon_mail"></span>
+                                </div>
+                                <div class="input__item">
+                                    <input type="text" name="genre_3" value="<?= $data['genre_3']; ?>">
+                                    <span class="icon_mail"></span>
+                                </div>
+                                <div class="input__item">
+                                    <input type="text" name="spek" value="<?= $data['spek']; ?>">
+                                    <span class="icon_mail"></span>
+                                </div>
+                                <div class="input__item">
+                                <input type="date" name="tanggal_rilis" value="<?=$data['tanggal_rilis'];?>">
+                                    <span class="icon_mail"></span>
+                                </div>
+                                <div class="input__item">
+                                <input class="form-control" type="file" name="fileToUpload">
+                                    <span class="icon_mail"></span>
+                                </div>
+                        
+                        <button type="submit" class="site-btn" value="Upload Image" name="submit">Update</button>
                         </form>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="login__register">
-                        <h3>Batal Edit?</h3>
-                        <a href="index.php?page=admin_data_game" class="primary-btn">Kembali ke Data Game</a>
+                        <h3>Cancel?</h3>
+                        <a href="admin_data_game.php" class="primary-btn">Back</a>
                     </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+    <!-- Login Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="page-up">
+            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="footer__logo">
+                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="footer__nav">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;<script>
+                            document.write(new Date().getFullYear());
+                        </script> 
+                    </p>
+
                 </div>
             </div>
         </div>
-    </section>
+    </footer>
+    <!-- Footer Section End -->
 
-    <footer class="footer"></footer>
+    <!-- Search model Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch"><i class="icon_close"></i></div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search model end -->
+
+    <!-- Js Plugins -->
     <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
+
+
 </body>
+
 </html>
