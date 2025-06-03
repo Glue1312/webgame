@@ -92,18 +92,18 @@ include 'koneksi.php';
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 text-right">
-                                 {/* Perbaikan Route untuk tombol Tambah User */}
+                                 
                                 <a href="index.php?page=admin_tambah_user" class="primary-btn mb-4" ><b>Tambah User</b></a>
                             </div>
                         </div>
 
-                        <div class="table-responsive"> {/* Membuat tabel responsif */}
+                        <div class="table-responsive"> 
                             <table class="table table-secondary table-striped">
                                 <thead>
                                     <tr>
                                         <th>Id User</th>
                                         <th>Username</th>
-                                        <th>Password (Hashed)</th> {/* Mengindikasikan password seharusnya di-hash */}
+                                        <th>Password (Hashed)</th> 
                                         <th>Email</th>
                                         <th>No Telp</th>
                                         <th>Tanggal Buat</th>
@@ -119,7 +119,7 @@ include 'koneksi.php';
                                     while ($data_user = mysqli_fetch_assoc($query_user)) {
                                 ?>
                                     <tr>
-                                        {/* Pencegahan XSS untuk semua data yang ditampilkan */}
+                                        
                                         <td><?php echo htmlspecialchars($data_user['id_user']); ?></td>
                                         <td><?php echo htmlspecialchars($data_user['username']); ?></td>
                                         <td><?php echo htmlspecialchars(substr($data_user['password'], 0, 10) . '...'); // Tampilkan sebagian kecil hash atau indikator saja ?></td>
@@ -127,7 +127,7 @@ include 'koneksi.php';
                                         <td><?php echo htmlspecialchars($data_user['no_telp']); ?></td>
                                         <td><?php echo htmlspecialchars(date('d M Y, H:i:s', strtotime($data_user['tanggal_dibuat']))); // Format tanggal ?></td>
                                         <td>
-                                            {/* Perbaikan Route & URL Encoding & Konfirmasi Hapus */}
+                                            
                                             <a href="index.php?page=admin_hapus_user&id_user=<?php echo urlencode($data_user['id_user']); ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus user ini? Ini juga akan menghapus transaksi terkait user ini.');">Hapus</a>
                                         </td>
                                     </tr>
@@ -160,7 +160,7 @@ include 'koneksi.php';
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    {/* Navigasi footer bisa ditambahkan di sini jika perlu */}
+                    
                 </div>
                 <div class="col-lg-3">
                     <p>
