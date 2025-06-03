@@ -1,7 +1,5 @@
 <?php
 // Selalu mulai sesi di baris paling atas sebelum output apapun
-// Di index.php, session_start() sudah ada, jadi baris ini mungkin tidak diperlukan
-// jika file ini selalu di-include melalui index.php.
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -90,13 +88,23 @@ include 'koneksi.php'; // Pastikan path koneksi.php benar
                 <div class="col-lg-12">
                     <div class="trending__product">
                         <div class="row">
-                            <div class="col-lg-8 col-md-8 col-sm-8"> <div class="section-title">
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                <div class="section-title">
                                     <h4>Data Games</h4>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 text-right"> <a href="index.php?page=admin_tambah_game" class="primary-btn mb-4"><b>Tambah Data Game</b></a>
                             </div>
-                        </div>
+                         <?php
+                        // Menampilkan pesan dari session jika ada (misalnya setelah hapus atau edit game)
+                        if (isset($_SESSION['pesan_sukses'])) {
+                            echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>" . htmlspecialchars($_SESSION['pesan_sukses']) . "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                            unset($_SESSION['pesan_sukses']);
+                        }
+                        if (isset($_SESSION['pesan_error'])) {
+                            echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" . htmlspecialchars($_SESSION['pesan_error']) . "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                            unset($_SESSION['pesan_error']);
+                        }
+                        ?>
 
                         <div class="row">
                             <?php
@@ -106,9 +114,8 @@ include 'koneksi.php'; // Pastikan path koneksi.php benar
                             if ($query_games && mysqli_num_rows($query_games) > 0) {
                                 while ($data_game = mysqli_fetch_assoc($query_games)) {
                             ?>
-                                    <div class="col-lg-4 col-md-6 col-sm-6"> {/* Mengubah dari col-lg-3 menjadi col-lg-4 agar lebih pas 3 item per baris */}
+                                    <div class="col-lg-4 col-md-6 col-sm-6">
                                         <div class="product__item">
-                                            {/* Asumsi gambar masih ada di img/game/ atau Anda akan menggantinya dengan placeholder/URL dari DB */}
                                             <div class="product__item__pic set-bg" data-setbg="img/game/<?php echo htmlspecialchars($data_game['id_game']); ?>.jpg">
                                                 <div class="ep">Harga : Rp.<?php echo number_format($data_game['harga']); ?></div>
                                             </div>
@@ -118,12 +125,12 @@ include 'koneksi.php'; // Pastikan path koneksi.php benar
                                                     <li>Developer : <?php echo htmlspecialchars($data_game['nama_dev']); ?></li>
                                                     <li>Genre : <?php echo htmlspecialchars($data_game['genre_1'] . ($data_game['genre_2'] ? ', ' . $data_game['genre_2'] : '') . ($data_game['genre_3'] ? ', ' . $data_game['genre_3'] : '')); ?></li>
                                                     <li>Specification : <?php echo htmlspecialchars($data_game['spek']); ?></li>
-                                                    <li>Release Date : <?php echo htmlspecialchars(date('d M Y', strtotime($data_game['tanggal_rilis']))); // Format tanggal ?></li>
+                                                    <li>Release Date : <?php echo htmlspecialchars(date('d M Y', strtotime($data_game['tanggal_rilis']))); ?></li>
                                                 </ul>
                                                 <h5><a href="index.php?page=user_view_game&id_game=<?php echo urlencode($data_game['id_game']); ?>"><?php echo htmlspecialchars($data_game['nama_game']); ?></a></h5>
                                                 <ul>
                                                     <li><a href="index.php?page=admin_edit_game&id_game=<?php echo urlencode($data_game['id_game']); ?>">Edit</a></li>
-                                                    <li><a href="index.php?page=admin_hapus_game&id_game=<?php echo urlencode($data_game['id_game']); ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus game ini?');">Hapus</a></li> {/* Tambahkan konfirmasi hapus */}
+                                                    <li><a href="index.php?page=admin_hapus_game&id_game=<?php echo urlencode($data_game['id_game']); ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus game ini?');">Hapus</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -145,7 +152,7 @@ include 'koneksi.php'; // Pastikan path koneksi.php benar
     </section>
     <footer class="footer">
         <div class="page-up">
-            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
+            <a href="#" id="scrollToTopButton"><span class="arrow_carrot_up"></span></a>
         </div>
         <div class="container">
             <div class="row">
