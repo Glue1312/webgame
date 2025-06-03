@@ -161,8 +161,7 @@ include 'koneksi.php'; // Pastikan path koneksi.php benar
                         <a href="index.php?page=admin_dashboard"><img src="img/1.png" alt="Logo Footer"></a>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    {/* Navigasi footer bisa ditambahkan di sini jika perlu */}
+                <div class="col-lg-6">                   
                 </div>
                 <div class="col-lg-3">
                     <p>
