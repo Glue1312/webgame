@@ -147,6 +147,9 @@ if (!$game_data) {
                                         <br><br><br><br><br>
                                 </form>
                                 </form>
+                                  <a href="index.php?page=user_dashboard">
+                                    <span>Kembali</span> <i class="fa fa-angle-left"></i> 
+                                </a>
                             </div>
                         </div>
                     </div>
