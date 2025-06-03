@@ -132,7 +132,7 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['jenis_login']) || $_SESSI
                <div class="col-sm-3">
                             <div class="login__register">
                                 <h3>Cancel?</h3>
-                                <a href="index.php?page=admin_data_game" class="primary-btn">Back</a>
+                                <a href="index.php?page=admin_data_user" class="primary-btn">Back</a>
                        
                         </div>
                     </div>
