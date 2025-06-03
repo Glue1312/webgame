@@ -184,6 +184,9 @@ $telp_user = $user_data['no_telp']; //
                                     <a><button class="btn" and style="background-color:transparent"><span>BAYAR</span> <i class="fa fa-angle-right"></i></button></a>
                                         <br><br><br><br><br>
                                 </form>
+                                <a href="index.php?page=user_dashboard">
+                                    <span>Kembali</span> <i class="fa fa-angle-left"></i> 
+                                </a>
                                 </form>
                             </div>
                         </div>
