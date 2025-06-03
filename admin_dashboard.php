@@ -187,7 +187,7 @@ if ($query_penghasilan) {
                                                     <li><?php echo htmlspecialchars($data_game['genre_2']); ?></li>
                                                     <li><?php echo htmlspecialchars($data_game['genre_3']); ?></li>
                                                 </ul>
-                                                <h5><a href="index.php?page=user_view_game&id_game=<?php echo urlencode($data_game['id_game']); // URL Encoding untuk parameter ?>"><?php echo htmlspecialchars($data_game['nama_game']); ?></a></h5>
+                                                <h5><a href="#"><?php echo htmlspecialchars($data_game['nama_game']); ?></a></h5>
                                             </div>
                                         </div>
                                     </div>
