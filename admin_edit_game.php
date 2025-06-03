@@ -179,9 +179,13 @@ if (isset($_GET['id_game']) && filter_var($_GET['id_game'], FILTER_VALIDATE_INT)
                            
                             <button type="submit" class="site-btn" name="submit">Update Game</button> 
                         </form>
-                        <div class="text-center mt-3">
-                             
-                            <a href="index.php?page=admin_data_game" class="primary-btn" style="background-color: #6c757d; border-color: #6c757d;">Batal & Kembali</a>
+                             </div>
+                        </div>
+                               <div class="col-sm-3">
+                            <div class="login__register">
+                                <h3>Cancel?</h3>
+                                <a href="index.php?page=admin_data_game" class="primary-btn">Back</a>
+                       
                         </div>
                     </div>
                 </div>
