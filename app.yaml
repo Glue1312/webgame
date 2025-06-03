@@ -20,4 +20,3 @@ env_variables:
   DB_NAME: 'gamebosdb' # Nama database Anda
   DB_USER: 'ester' # Username database Anda
   DB_PASS: '' # GANTI DENGAN PASSWORD KUAT YANG SUDAH ANDA BUAT
-  GCS_BUCKET_NAME: 'ta-tcc' # Nama bucket Anda
