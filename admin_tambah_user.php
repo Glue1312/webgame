@@ -95,8 +95,8 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['jenis_login']) || $_SESSI
     </section>
     <section class="login spad">
         <div class="container">
-            <div class="row justify-content-center"> {/* Memusatkan form */}
-                <div class="col-lg-7"> {/* Sedikit diperlebar untuk form */}
+            <div class="row justify-content-center"> 
+                <div class="col-lg-7"> 
                     <div class="login__form">
                         <h3>Tambah Akun User</h3><br>
                         <?php
@@ -106,19 +106,19 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['jenis_login']) || $_SESSI
                             unset($_SESSION['pesan_error_tambah_user']); // Hapus pesan setelah ditampilkan
                         }
                         ?>
-                        {/* Perbaikan Route: Action form mengarah ke index.php */}
+                     
                         <form method="POST" action="index.php?page=admin_tambah_user_proses">
                             <div class="input__item">
                                 <input type="text" name="username" required placeholder="Username">
-                                <span class="icon_profile"></span> {/* Icon diganti agar lebih sesuai */}
+                                <span class="icon_profile"></span> 
                             </div>
                             <div class="input__item">
-                                <input type="email" name="email" required placeholder="Email"> {/* Typo 'Email' diperbaiki */}
+                                <input type="email" name="email" required placeholder="Email"> 
                                 <span class="icon_mail"></span>
                             </div>
                             <div class="input__item">
                                 <input type="text" name="no_telp" required placeholder="No Telp">
-                                <span class="icon_phone"></span> {/* Icon diganti agar lebih sesuai */}
+                                <span class="icon_phone"></span> 
                             </div>
                             <div class="input__item">
                                 <input type="password" name="password" required placeholder="Password">
@@ -126,13 +126,16 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['jenis_login']) || $_SESSI
                             </div>
                             <button type="submit" class="site-btn">Tambahkan User</button>
                         </form>
-                        <div class="text-center mt-3">
-                             {/* Perbaikan Route: Link kembali */}
-                            <a href="index.php?page=admin_data_user" class="primary-btn" style="background-color: #6c757d; border-color: #6c757d;">Kembali ke Data User</a>
-                        </div>
+                       
                     </div>
                 </div>
-                {/* Kolom register tidak relevan di sini, jadi bisa dihapus atau dikosongkan */}
+               <div class="col-sm-3">
+                            <div class="login__register">
+                                <h3>Cancel?</h3>
+                                <a href="index.php?page=admin_data_game" class="primary-btn">Back</a>
+                       
+                        </div>
+                    </div>
             </div>
         </div>
     </section>
@@ -150,7 +153,7 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['jenis_login']) || $_SESSI
                 <div class="col-lg-6">
                     <div class="footer__nav">
                         <ul>
-                            {/* Isi dengan link footer yang relevan jika ada */}
+                           
                         </ul>
                     </div>
                 </div>
