@@ -47,7 +47,7 @@ if (!$game_data) {
     <meta name="keywords" content="Anime, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Beli <?php echo htmlspecialchars($game_data['nama_game']); ?> - LGS</title> {/* Judul dinamis */}
+    <title>Beli <?php echo htmlspecialchars($game_data['nama_game']); ?> - LGS</title> 
     <link rel="shortcut icon" href="img/1.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -111,7 +111,7 @@ if (!$game_data) {
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <div class="section-title">
-                        <h4>Detail Pembelian</h4> {/* Judul disesuaikan */}
+                        <h4>Detail Pembelian</h4> 
                     </div>
                 </div>
             </div>
@@ -123,21 +123,15 @@ if (!$game_data) {
             }
             ?>
             <div class="hero__slider owl-carousel">
-                {/* Pastikan path gambar benar atau ganti dengan placeholder */}
+               
                 <div class="hero__items set-bg" data-setbg="img/buy/<?php echo htmlspecialchars($game_data['id_game']); ?>.jpg"><br><br>
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="hero__text">
-                                {/* Perbaikan Route: Action form ke index.php */}
+                               
                                 <form method="POST" action="index.php?page=user_transaksi_beli_cek">
                                     <input type="hidden" name="id_game" value="<?php echo htmlspecialchars($game_data['id_game']); ?>">
-                                    {/* Harga diambil dari DB, tidak perlu input hidden harga lagi di sini,
-                                        karena user_transaksi_beli_cek.php akan mengambilnya lagi dari DB
-                                        berdasarkan id_game untuk konfirmasi.
-                                        <input type="hidden" name="harga" value="<?= $data['harga']; ?>">
-                                        Nama game juga akan diambil di user_transaksi_beli_cek.php
-                                        <input type="hidden" name="nama_game" value="<?= $data['nama_game']; ?>">
-                                    */}
+                                   
                                     <div class="label">Rp <?php echo number_format($game_data['harga']); // XSS Prevention & Formatting ?></div>
                                     <div style="background: black; opacity: 0.8; padding: 10px; border-radius: 10px;">
                                         <h2><?php echo htmlspecialchars($game_data['nama_game']); // XSS Prevention ?></h2>
@@ -148,11 +142,10 @@ if (!$game_data) {
                                             <b>Specification</b> : <?php echo htmlspecialchars($game_data['spek']); ?>
                                         </p>
                                     </div>
-                                    {/* Tombol submit untuk ke halaman konfirmasi */}
-                                    <button type="submit" class="btn" style="background-color:transparent; color: #fff; border: 1px solid #fff; padding: 10px 20px; margin-top: 15px;">
-                                        <span>BELI SEKARANG</span> <i class="fa fa-angle-right"></i>
-                                    </button>
-                                    <br><br><br><br><br>
+                                  
+                                    <a><button class="btn" and style="background-color:transparent"><span>BUY NOw</span> <i class="fa fa-angle-right"></i></button></a>
+                                        <br><br><br><br><br>
+                                </form>
                                 </form>
                             </div>
                         </div>
