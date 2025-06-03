@@ -91,10 +91,10 @@ include 'koneksi.php';
                                     <h4>Data Transaksi</h4>
                                 </div>
                             </div>
-                            {/* Tidak ada tombol tambah untuk transaksi dari sisi admin di kode asli, jadi dibiarkan */}
+                            
                         </div>
 
-                        <div class="table-responsive"> {/* Membuat tabel responsif */}
+                        <div class="table-responsive"> 
                             <table class="table table-secondary table-striped">
                                 <thead>
                                     <tr>
@@ -117,7 +117,7 @@ include 'koneksi.php';
                                     while ($data_transaksi = mysqli_fetch_assoc($query_transaksi)) {
                                 ?>
                                     <tr>
-                                        {/* Pencegahan XSS untuk semua data yang ditampilkan */}
+                                       
                                         <td><?php echo htmlspecialchars($data_transaksi['id_transaksi']); ?></td>
                                         <td><?php echo htmlspecialchars($data_transaksi['id_user']); ?></td>
                                         <td><?php echo htmlspecialchars($data_transaksi['id_game']); ?></td>
@@ -126,7 +126,7 @@ include 'koneksi.php';
                                         <td><?php echo htmlspecialchars(date('d M Y, H:i:s', strtotime($data_transaksi['tanggal_transaksi']))); // Format tanggal ?></td>
                                         <td><?php echo htmlspecialchars($data_transaksi['key']); ?></td>
                                         <td>
-                                            {/* Perbaikan Route & URL Encoding & Konfirmasi Hapus */}
+                                            
                                             <a href="index.php?page=admin_hapus_transaksi&id_transaksi=<?php echo urlencode($data_transaksi['id_transaksi']); ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus transaksi ini?');">Hapus</a>
                                         </td>
                                     </tr>
@@ -159,7 +159,7 @@ include 'koneksi.php';
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    {/* Navigasi footer bisa ditambahkan di sini jika perlu */}
+                    
                 </div>
                 <div class="col-lg-3">
                     <p>
