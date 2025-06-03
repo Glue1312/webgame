@@ -128,8 +128,8 @@ if (isset($_GET['id_game']) && filter_var($_GET['id_game'], FILTER_VALIDATE_INT)
     </section>
     <section class="login spad">
         <div class="container">
-            <div class="row justify-content-center"> {/* Form dipusatkan */}
-                <div class="col-lg-8"> {/* Form diperlebar */}
+            <div class="row justify-content-center"> 
+                <div class="col-lg-8"> 
                     <div class="login__form">
                         <h3>Edit Game: <?php echo htmlspecialchars($game_data['nama_game']); ?></h3><br>
                         <?php
@@ -139,9 +139,9 @@ if (isset($_GET['id_game']) && filter_var($_GET['id_game'], FILTER_VALIDATE_INT)
                             unset($_SESSION['pesan_error_edit_game']); // Hapus pesan setelah ditampilkan
                         }
                         ?>
-                        {/* Action form ke index.php, enctype dihapus */}
+                     
                         <form method="POST" action="index.php?page=admin_edit_game_proses">
-                             {/* ID Game tetap dikirim sebagai hidden field */}
+                         
                             <input type="hidden" name="id_game" value="<?php echo htmlspecialchars($game_data['id_game']); ?>">
                             
                             <div class="input__item">
@@ -176,11 +176,11 @@ if (isset($_GET['id_game']) && filter_var($_GET['id_game'], FILTER_VALIDATE_INT)
                                 <input type="date" name="tanggal_rilis" value="<?php echo htmlspecialchars($game_data['tanggal_rilis']); ?>" required>
                                 <span class="icon_calendar"></span>
                             </div>
-                            {/* Input file dihapus */}
-                            <button type="submit" class="site-btn" name="submit">Update Game</button> {/* name="submit" bisa jadi tidak relevan lagi */}
+                           
+                            <button type="submit" class="site-btn" name="submit">Update Game</button> 
                         </form>
                         <div class="text-center mt-3">
-                             {/* Perbaikan Route: Link kembali */}
+                             
                             <a href="index.php?page=admin_data_game" class="primary-btn" style="background-color: #6c757d; border-color: #6c757d;">Batal & Kembali</a>
                         </div>
                     </div>
