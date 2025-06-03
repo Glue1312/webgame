@@ -1,19 +1,29 @@
 <?php
 session_start();
-if (!(isset($_SESSION['username']) && isset($_SESSION['jenis_login']) && $_SESSION['jenis_login'] == 'admin')) {
-    header("location: index.php?page=admin_login&pesan=belum_login_admin");
-    exit;
+if ($_SESSION['jenis_login'] != 'admin') {
+    header("location:login.php?pesan=belum_login_admin");
+} else if (empty($_SESSION['username'])) {
+    header("location:admin_login.php?pesan=belum_login");
 }
-include 'koneksi.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="zxx">
+
 <head>
     <meta charset="UTF-8">
-    <title>Admin Data Game - LGS</title>
+    <meta name="description" content="Anime Template">
+    <meta name="keywords" content="Anime, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin Game LGS</title>
     <link rel="shortcut icon" href="img/1.png">
+
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
@@ -23,15 +33,21 @@ include 'koneksi.php';
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
+
 <body>
-    <div id="preloder"><div class="loader"></div></div>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header Section Begin -->
     <header class="header">
         <div class="container">
             <div class="row">
                 <div class="col-lg-2">
                     <div class="header__logo">
-                        <a href="index.php?page=admin_dashboard">
-                            <img src="img/1.png" alt="LGS Logo">
+                        <a href="admin_dashboard.php">
+                            <img src="img/1.png" alt=""> <!-- Logo Toko--->
                         </a>
                     </div>
                 </div>
@@ -39,10 +55,10 @@ include 'koneksi.php';
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li><a href="index.php?page=admin_dashboard">Homepage</a></li>
-                                <li class="active"><a href="index.php?page=admin_data_game">Games </a></li>
-                                <li><a href="index.php?page=admin_data_transaksi">Transaksi</a></li>
-                                <li><a href="index.php?page=admin_data_user">User</a></li>
+                                <li><a href="admin_dashboard.php">Homepage</a></li>
+                                <li class="active"><a href="admin_data_game.php">Games </a></li>
+                                <li><a href="admin_data_transaksi.php">Transaksi</a></li>
+                                <li><a href="admin_data_user.php">User</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -51,107 +67,134 @@ include 'koneksi.php';
                     <div class="header__nav ms-auto">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li><a href="#">Hallo <?php echo htmlspecialchars($_SESSION['username']); ?> <span class="arrow_carrot-down"></span></a>
+                                <li><a href="#">Hallo <?php echo $_SESSION['username'] ?> <span class="arrow_carrot-down"></span></a>
                                     <ul class="dropdown">
-                                        <li><a href="index.php?page=logout">Logout</a></li>
+                                        <li><a href="logout.php?">Logout</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </nav>
                     </div>
+
                 </div>
             </div>
         </div>
         <div id="mobile-menu-wrap"></div>
-    </header>
 
+    </header>
+    <!-- Header End -->
+
+    <!-- Product Section Begin -->
     <section class="product spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="trending__product">
                         <div class="row">
-                            <div class="col-lg-8 col-md-8 col-sm-8">
-                                <div class="section-title"><h4>Data Games</h4></div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 text-right">
-                                <a href="index.php?page=admin_tambah_game" class="primary-btn" style="margin-bottom: 20px;"><b>+ Tambah Data Game</b></a>
+                            <div class="col-lg-2 col-md-6 col-sm-6">
+                                <div class="section-title">
+                                    <h4>Data Games</h4><br><br>
+                                    <a href="admin_tambah_game.php?" class="primary-btn"><b>--> Tambah Data</b></a>
+
+                                </div>
                             </div>
                         </div>
+
                         <div class="row">
                             <?php
-                            $sql_all_games    = "SELECT * FROM game ORDER BY id_game DESC";
-                            $query_all_games  = mysqli_query($connect, $sql_all_games);
-                            $bucketNameEnv    = getenv('GCS_BUCKET_NAME') ?: 'ta-tcc';
+                            include('koneksi.php');
 
-                            if($query_all_games && mysqli_num_rows($query_all_games) > 0){
-                                while ($data = mysqli_fetch_array($query_all_games)) {
-                                    // Asumsi ekstensi gambar adalah .jpg jika tidak ada kolom nama_file_gambar
-                                    // Jika Anda ingin fleksibel dengan ekstensi, Anda perlu cara untuk mengetahuinya
-                                    // (misalnya, menyimpan nama file lengkap di DB atau mencoba beberapa ekstensi).
-                                    // Untuk saat ini, kita akan coba .jpg, .png, .jpeg
-                                    $possible_extensions = ['jpg', 'png', 'jpeg'];
-                                    $imagePath = "img/placeholder.jpg"; // Default
+                            $sql    = "SELECT * FROM game";
+                            $query    = mysqli_query($connect, $sql);
 
-                                    // Cari ekstensi yang valid
-                                    // Ini BUKAN cara yang paling efisien jika Anda memiliki banyak gambar/ekstensi.
-                                    // Lebih baik menyimpan nama file lengkap (id_game.ekstensi) di DB.
-                                    // Namun, jika Anda TIDAK mau ada kolom DB baru, ini adalah salah satu pendekatan.
-                                    foreach ($possible_extensions as $ext) {
-                                        $tempPath = "https://storage.googleapis.com/{$bucketNameEnv}/img/game/" . rawurlencode($data['id_game']) . "." . $ext;
-                                        // Cara sederhana untuk cek apakah file ada (tidak selalu akurat dan bisa lambat):
-                                        // $headers = @get_headers($tempPath);
-                                        // if ($headers && strpos($headers[0], '200')) {
-                                        //    $imagePath = $tempPath;
-                                        //    break;
-                                        // }
-                                        // Untuk App Engine, lebih baik asumsikan satu format atau simpan nama lengkap di DB.
-                                        // Untuk saat ini, kita default ke .jpg
-                                        if ($ext == 'jpg') { // Asumsikan default adalah JPG
-                                            $imagePath = $tempPath;
-                                        }
-                                    }
-                                    // Jika Anda YAKIN semua gambar akan .jpg, sederhanakan:
-                                    // $imagePath = "https://storage.googleapis.com/{$bucketNameEnv}/img/game/" . rawurlencode($data['id_game']) . ".jpg";
-
+                            while ($data = mysqli_fetch_array($query)) {
                             ?>
-                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="col-lg-3 col-md-6 col-sm-6">
                                     <div class="product__item">
-                                        <div class="product__item__pic set-bg" data-setbg="<?php echo htmlspecialchars($imagePath); ?>">
-                                            <div class="ep">Rp. <?php echo htmlspecialchars(number_format($data['harga'], 0, ',', '.')); ?></div>
+                                        <div class="product__item__pic set-bg" data-setbg="img/game/<?php echo $data['id_game']?>.jpg">
+                                            <div class="ep">Harga : Rp.<?= $data['harga']; ?></div> <!-- rating game -->
                                         </div>
                                         <div class="product__item__text">
                                             <ul>
-                                                <li>ID Game : <?php echo htmlspecialchars($data['id_game']); ?> </li>
-                                                <li>Developer : <?php echo htmlspecialchars($data['nama_dev']); ?></li>
-                                                <li>Genre : <?php echo htmlspecialchars($data['genre_1'] . (!empty($data['genre_2']) ? ', ' . $data['genre_2'] : '') . (!empty($data['genre_3']) ? ', ' . $data['genre_3'] : '')); ?></li>
-                                                <li>Spek : <?php echo htmlspecialchars(substr($data['spek'], 0, 50)) . (strlen($data['spek']) > 50 ? '...' : ''); ?></li>
-                                                <li>Rilis : <?php echo htmlspecialchars(date('d M Y', strtotime($data['tanggal_rilis']))); ?></li>
+
+                                                <li>ID game : <?= $data['id_game']; ?> </li>
+                                                <li>Developer : <?= $data['nama_dev']; ?></li>
+                                                <li>Genre : <?= $data['genre_1']; ?>, <?= $data['genre_2']; ?>, <?= $data['genre_3']; ?></li>
+                                                <li>Specification : <?= $data['spek']; ?></li>
+                                                <li>Release Date : <?= $data['tanggal_rilis']; ?></li>
                                             </ul>
-                                            <h5><a href="index.php?page=user_view_game&id_game=<?php echo $data['id_game']; ?>"><?php echo htmlspecialchars($data['nama_game']); ?></a></h5>
-                                            <ul style="margin-top: 10px;">
-                                                <li style="margin-right: 10px;"><a href="index.php?page=admin_edit_game&id_game=<?php echo $data['id_game']; ?>" class="btn btn-sm btn-info">Edit</a></li>
-                                                <li><a href="index.php?page=admin_hapus_game&id_game=<?php echo $data['id_game']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus game ini?');">Hapus</a></li>
+                                            <h5><a href="user_view_game.php?id_game=<?php echo $data['id_game']; ?>"><?= $data['nama_game']; ?></a></h5>
+                                            <ul>
+                                                <li> <a href="admin_edit_game.php?id_game=<?php echo $data['id_game']; ?>">Edit</a></li>
+                                                <li> <a href="admin_hapus_game.php?id_game=<?php echo $data['id_game']; ?>">Hapus</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-                            <?php
-                                }
-                            } else {
-                                echo "<div class='col-12'><p>Belum ada data game.</p></div>";
-                            }
-                            ?>
+                            <?php } ?>
+
                         </div>
                     </div>
+
+
+                </div>
+
+    </section>
+    <!-- Product Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="page-up">
+            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="footer__logo">
+                        <a href="admin_dashboard.php"><img src="img/1.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+
+                </div>
+                <div class="col-lg-3">
+                    <p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script> 
+                       
+                    </p>
+
                 </div>
             </div>
         </div>
-    </section>
+    </footer>
+    <!-- Footer Section End -->
 
-    <footer class="footer"></footer>
+    <!-- Search model Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch"><i class="icon_close"></i></div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search model end -->
+
+    <!-- Js Plugins -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
+
+
 </body>
+
 </html>
