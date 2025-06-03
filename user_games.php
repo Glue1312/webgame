@@ -24,7 +24,7 @@ $id_user = $_SESSION['id_user']; //
     <meta name="keywords" content="Anime, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My Library - LGS</title> {/* Judul disesuaikan */}
+    <title>My Library - LGS</title> 
     <link rel="shortcut icon" href="img/1.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@ $id_user = $_SESSION['id_user']; //
             <div class="row">
                 <div class="col-lg-2">
                     <div class="header__logo">
-                        {/* Perbaikan Route */}
+                       
                         <a href="index.php?page=user_dashboard">
                             <img src="img/1.png" alt="Logo Toko">
                         </a>
@@ -60,7 +60,6 @@ $id_user = $_SESSION['id_user']; //
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                {/* Perbaikan Route */}
                                 <li><a href="index.php?page=user_dashboard">Homepage</a></li>
                                 <li class="active"><a href="index.php?page=user_games">My Library</a></li>
                             </ul>
@@ -73,7 +72,7 @@ $id_user = $_SESSION['id_user']; //
                             <ul>
                                 <li><a href="#">Hallo <?php echo htmlspecialchars($_SESSION['username']); // XSS Prevention ?> <span class="arrow_carrot-down"></span></a>
                                     <ul class="dropdown">
-                                        {/* Perbaikan Route */}
+                                       
                                         <li><a href="index.php?page=user_edit">Edit Data</a></li>
                                         <li><a href="index.php?page=logout">Logout</a></li>
                                     </ul>
@@ -123,9 +122,9 @@ $id_user = $_SESSION['id_user']; //
                         ?>
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
-                                    {/* Asumsi gambar game masih ada, jika tidak perlu disesuaikan */}
+                                    
                                     <div class="product__item__pic set-bg" data-setbg="img/game/<?php echo htmlspecialchars($data['id_game']);?>.jpg">
-                                        {/* Rating bisa dinamis jika ada datanya */}
+                                        
                                         <div class="ep">10 / 10 Rating</div>
                                     </div>
                                     <div class="product__item__text">
@@ -135,7 +134,7 @@ $id_user = $_SESSION['id_user']; //
                                             <li>Tanggal Transaksi</li>
                                             <li><?php echo htmlspecialchars(date('d M Y, H:i:s', strtotime($data['tanggal_transaksi']))); // Format tanggal ?></li>
                                         </ul>
-                                        {/* Perbaikan Route & XSS Prevention & URL Encoding */}
+                                       
                                         <h5><a href="index.php?page=user_view_game&id_game=<?php echo urlencode($data['id_game']);?>"><?php echo htmlspecialchars($data['nama_game']); ?></a></h5>
                                     </div>
                                 </div>
@@ -159,7 +158,7 @@ $id_user = $_SESSION['id_user']; //
                                 <h4>Trending</h4>
                             </div>
                             <div class="filter__gallery">
-                                {/* Contoh game trending, pastikan link menggunakan routing yang benar dan data di-escape jika dinamis */}
+                               
                                 <div class="product__sidebar__view__item set-bg" data-setbg="img/dragon.jpg">
                                     <div class="ep">8,2 / 10 Rating</div>
                                     <h5><a href="index.php?page=user_transaksi_beli&id_game=27">Dragon Age: Inquisition</a></h5>
@@ -182,7 +181,7 @@ $id_user = $_SESSION['id_user']; //
                                 </div>
                             </div>
                         </div>
-                        {/* Anda bisa menambahkan bagian lain di sidebar jika ada */}
+                       
                     </div>
                 </div>
             </div>
@@ -202,7 +201,7 @@ $id_user = $_SESSION['id_user']; //
                 <div class="col-lg-6">
                     <div class="footer__nav">
                         <ul>
-                            {/* Isi dengan link footer yang relevan jika ada */}
+                           
                         </ul>
                     </div>
                 </div>
