@@ -47,7 +47,7 @@ if (!$game_data) {
     <meta name="keywords" content="Anime, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Detail: <?php echo htmlspecialchars($game_data['nama_game']); ?> - LGS</title> {/* Judul dinamis */}
+    <title>Detail: <?php echo htmlspecialchars($game_data['nama_game']); ?> - LGS</title> 
     <link rel="shortcut icon" href="img/1.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -83,9 +83,7 @@ if (!$game_data) {
                         <nav class="header__menu mobile-menu">
                             <ul>
                                 <li><a href="index.php?page=user_dashboard">Homepage</a></li>
-                                {/* Menandai My Library sebagai aktif jika ini diakses dari sana,
-                                    atau Homepage jika dari dashboard. Perlu logika tambahan jika ingin lebih canggih.
-                                    Untuk sederhana, biarkan My Library tidak aktif jika bukan halaman My Library. */}
+                              
                                 <li><a href="index.php?page=user_games">My Library </a></li>
                             </ul>
                         </nav>
@@ -119,13 +117,13 @@ if (!$game_data) {
                 </div>
             </div>
             <div class="hero__slider owl-carousel">
-                {/* Pastikan path gambar benar atau ganti dengan placeholder */}
+               
                 <div class="hero__items set-bg" data-setbg="img/buy/<?php echo htmlspecialchars($game_data['id_game']); ?>.jpg"><br><br>
                     <div class="row">
-                        <div class="col-lg-6"> {/* Diperlebar agar konten lebih muat */}
+                        <div class="col-lg-6"> 
                             <div class="hero__text">
-                                <div style="background: black; opacity: 0.8; padding: 15px; border-radius: 10px;"> {/* Padding diubah */}
-                                    {/* Input hidden tidak diperlukan di halaman view */}
+                                <div style="background: black; opacity: 0.8; padding: 15px; border-radius: 10px;"> 
+                                  
                                     <h2><?php echo htmlspecialchars($game_data['nama_game']); // XSS Prevention ?></h2>
                                     <br>
                                     <p>
@@ -137,9 +135,9 @@ if (!$game_data) {
                                         <br><br>
                                     </p>
                                 </div>
-                                {/* Perbaikan Route: Link kembali ke library atau dashboard */}
+                               
                                 <a href="index.php?page=user_games" class="mt-3 d-inline-block" style="color: #fff; border: 1px solid #fff; padding: 10px 15px; border-radius: 4px;">
-                                    <span>Kembali ke Library</span> <i class="fa fa-angle-left"></i> {/* Icon diganti */}
+                                    <span>Kembali ke Library</span> <i class="fa fa-angle-left"></i> 
                                 </a>
                                 <br><br><br><br><br>
                             </div>
