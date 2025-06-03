@@ -136,7 +136,7 @@ if (!$game_data) {
                                     </p>
                                 </div>
                                
-                                <a href="index.php?page=user_games" class="mt-3 d-inline-block" style="color: #fff; border: 1px solid #fff; padding: 10px 15px; border-radius: 4px;">
+                                <a href="index.php?page=user_games">
                                     <span>Kembali ke Library</span> <i class="fa fa-angle-left"></i> 
                                 </a>
                                 <br><br><br><br><br>
