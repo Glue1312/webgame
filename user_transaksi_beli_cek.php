@@ -83,7 +83,7 @@ $telp_user = $user_data['no_telp']; //
     <meta name="keywords" content="Anime, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Konfirmasi Pembelian - LGS</title> {/* Judul disesuaikan */}
+    <title>Konfirmasi Pembelian - LGS</title>
     <link rel="shortcut icon" href="img/1.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -159,14 +159,14 @@ $telp_user = $user_data['no_telp']; //
             }
             ?>
             <div class="hero__slider owl-carousel">
-                 {/* Pastikan path gambar benar atau ganti dengan placeholder */}
+                
                 <div class="hero__items set-bg" data-setbg="img/buy/<?php echo htmlspecialchars($game_data['id_game']); ?>.jpg"><br><br>
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="hero__text">
-                                {/* Perbaikan Route: Action form ke index.php */}
+                              
                                 <form method="POST" action="index.php?page=user_proses_transaksi_beli">
-                                    {/* Kirim id_game, nama_game, dan harga yang sudah diverifikasi dari DB */}
+                                  
                                     <input type="hidden" name="id_game" value="<?php echo htmlspecialchars($game_data['id_game']); ?>">
                                     <input type="hidden" name="nama_game" value="<?php echo htmlspecialchars($game_data['nama_game']); ?>">
                                     <input type="hidden" name="harga" value="<?php echo htmlspecialchars($game_data['harga']); ?>">
@@ -181,11 +181,9 @@ $telp_user = $user_data['no_telp']; //
                                             Tagihan akan dikirim lewat email dan no telp, bisa dibayar lewat (Dana, Paypal, DLL). Jika tagihan sudah dibayar maka Game akan otomatis masuk ke Library.
                                         </p>
                                     </div>
-                                    {/* Tombol submit untuk memproses pembelian */}
-                                    <button type="submit" class="btn" style="background-color:transparent; color: #fff; border: 1px solid #fff; padding: 10px 20px; margin-top: 15px;">
-                                        <span>BAYAR</span> <i class="fa fa-angle-right"></i>
-                                    </button>
-                                    <br><br><br><br><br>
+                                    <a><button class="btn" and style="background-color:transparent"><span>BAYAR</span> <i class="fa fa-angle-right"></i></button></a>
+                                        <br><br><br><br><br>
+                                </form>
                                 </form>
                             </div>
                         </div>
